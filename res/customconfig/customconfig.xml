@@ -1,0 +1,101 @@
+<settingsRoot>
+<settingsTab name="CPU Control">
+
+	<settingsPane description="You can change max and min frequencies of your device here. 1.26 GHz is minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.26 GHz is also maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.26 GHz, Min 300 MHz)" name="CPU Frequency control">
+
+		<seekBar description="This slider sets maximum frequency of your device." name="Max CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="1267200" reversed="false" step="76800" max="2496000"/>
+
+		<seekBar description="This slider sets minimum frequency of your device." name="Min CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" unit="kHz" min="300000" reversed="false" step="76800" max="1267200"/>
+
+	</settingsPane>
+	<settingsPane description="Intelliplug Hotplug is an intelligient and better hotlug driver then stock mpdecision driver. Recommended for better power saving." name="Intelliplug Hotplug Driver">
+		<spinner description="Intelliplug conflicts with stock mpdecision. It is HIGHLY recommended to stop mpdecision after enabling Intelliplug. Also, if intelliplug is active on reboot, we will take care stopping mpdecision for you." name="Intelliplug Driver" action="generic /sys/module/intelli_plug/parameters/intelli_plug_active">
+			<spinnerItem name="Enable Intelliplug" value="1"/>
+			<spinnerItem name="Disable Intelliplug" value="0"/> 
+		</spinner>
+		<button description="This button helps enabling/disabling mpdecision. Simply tap it whenever you switch Intelliplug state above." name="mpdecision" action="push-actions/mpdecisionstate" label="Enable/Disable mpdecision"/> 
+		<spinner description="Eco Mode is a special power savings mode part of the intelli_plug where the kernel automatically reconfigures its decisions in real time and optimizes to use only 2 out of 4 cores. Cores 3 and 4 are turned off completely. Recommended on for power saving and off for performance." name="Eco Mode" action="generic /sys/module/intelli_plug/parameters/eco_mode_active">
+			<spinnerItem name="On" value="1"/> 
+			<spinnerItem name="Off" value="0"/> 
+		</spinner>
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="Memory Control">
+	<settingsPane description="UKSM is new technique for KSM." name="UKSM">
+
+		<checkbox description="Enable/Disable 'Ultra KSM Control'. This will merge some memory but consumes more CPU and battery. You will need to reboot your device for changes to take effect." name="Ultra KSM Control" action="generic_cortex /tmp/uksm_control" label="Ultra KSM Control"/>
+		<button description="Ultra KSM state check" name="Ultra KSM STATS" action="push-actions/uksmchange" label="Apply UKSM changes"/>
+		<button description="Ultra KSM state check. Memory samepage merging is not quick process. So, stats may show 0 MB initially." name="Ultra KSM STATS" action="push-actions/uksmstats" label="Ultra KSM Stats"/>
+
+	<button description="Clean RAM cache. This will release all cached and buffered RAM" name="CLEAN RAM CACHE" action="push-actions/clean_ram_cache" label="Clean RAM Cache"/>
+		
+
+	</settingsPane>
+</settingsTab>
+
+<settingsTab name="Wake Control">
+
+	<settingsPane description="DoubleTap2Wake Function" name="DT2W">
+
+		<spinner description="This option enables the doubletap2wake (AKA KnockKnock) feature (may cause more battery drain when in pocket)" name="DT2W" action="generic /sys/android_touch/doubletap2wake">
+			<spinnerItem name="On" value="1"/> 
+			<spinnerItem name="Off" value="0"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="Sweep2Wake Function" name="S2W">
+
+		<spinner description="This option enables the sweep2wake feature (may cause more battery drain when in pocket)" name="S2W" action="generic /sys/android_touch/sweep2wake">
+			<spinnerItem name="On" value="1"/> 
+			<spinnerItem name="Off" value="0"/> 
+		</spinner>
+
+		<seekBar description="This slider sets start position of S2W. Default 400." name="Start Position" action="generic /sys/kernel/s2w_parameters/s2w_start_posn" unit="" min="0" reversed="false" step="10" max="1280"/>
+
+		<seekBar description="This slider sets start position of S2W. Default 700." name="Mid Position" action="generic /sys/kernel/s2w_parameters/s2w_mid_posn" unit="" min="0" reversed="false" step="10" max="1280"/>
+
+		<seekBar description="This slider sets start position of S2W. Default 830." name="End Position" action="generic /sys/kernel/s2w_parameters/s2w_end_posn" unit="" min="0" reversed="false" step="10" max="1280"/>
+
+		<seekBar description="This slider sets threshold of S2W. Default 250." name="Threshold" action="generic /sys/kernel/s2w_parameters/s2w_threshold" unit="" min="0" reversed="false" step="50" max="1000"/>
+
+		<spinner description="This option selects orientation of S2W. Please note you will need adjust co-ordinates accordingly. Default Horizontal." name="Orientation" action="generic /sys/kernel/s2w_parameters/s2w_swap_coord">
+			<spinnerItem name="Horizontal" value="0"/> 
+			<spinnerItem name="Vertical" value="1"/> 
+		</spinner>
+
+	</settingsPane>
+</settingsTab>
+
+<settingsTab name="Miscellaneous">
+	<settingsPane description="This section controls miscellaneous tweaks of the device." name="Misc Tweaks">
+
+		<spinner description="Enable/Disable Dynamic File Sync. While screen is on, file sync is temporarily deferred, when screen is off, a flush is called to synchronize all outstanding writes. Please note: There may be loss of slight data if device reboots abruptly if Dynamic Fsync is enabled." name="Dynamic FSync" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
+			<spinnerItem name="Enable" value="1"/> 
+			<spinnerItem name="Disable" value="0"/> 
+		</spinner>
+
+<spinner description="This option allows some cheap USB chargers with > 500ma to be recognized as an AC charger in order to charge at a faster rate." name="Fast Charge" action="generic /sys/kernel/fast_charge/force_fast_charge">
+			<spinnerItem name="Enable" value="1"/> 
+			<spinnerItem name="Disable" value="0"/> 
+		</spinner>
+
+
+	</settingsPane>
+
+</settingsTab>
+<settingsTab name="Modules">
+
+	<settingsPane description="Here, you can load kernel modules on boot that will allow some extra functions." name="Kernel Modules">
+
+		<checkbox description="Enable/Disable Exfat module load on boot." name="EXFAT Module" action="generic_cortex /tmp/exfat_module" label="EXFAT Module"/>
+
+		<button description="This displays the currently loaded modules." name="Show Loaded Modules" action="push-actions/show_modules" label="Show Loaded Modules"/>
+
+		<button description="This button tries to force-load selected modules in the memory without requiring a reboot. This may not help, because most modules requires a reboot. This button is primarily for testing purposes." name="Force-Load Modules" action="push-actions/load_modules" label="Force-Load Modules"/>
+
+	</settingsPane>
+</settingsTab>
+</settingsRoot>

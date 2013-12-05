@@ -1,0 +1,61 @@
+#!/system/xbin/busybox sh
+
+BB=/system/xbin/busybox
+
+. /res/customconfig/customconfig-helper;
+read_defaults;
+read_config;
+
+$BB mount -o remount,rw /system;
+$BB mount -t rootfs -o remount,rw rootfs;
+
+cd /;
+
+GMTWEAKS()
+{
+
+	if [ -f /system/app/STweaks.apk ]; then
+		$BB rm -f /system/app/STweaks.apk > /dev/null 2>&1;
+	fi;
+
+	if [ -f /system/priv-app/NXTweaks.apk ]; then
+		stmd5sum=`$BB md5sum /system/priv-app/NXTweaks.apk | $BB awk '{print $1}'`
+		stmd5sum_kernel=`cat /res/nxtweaks_md5`;
+		if [ "$stmd5sum" != "$stmd5sum_kernel" ]; then
+			$BB rm -f /system/priv-app/NXTweaks.apk > /dev/null 2>&1;
+			$BB rm -f /data/app/com.gokhanmoral.*weaks*.apk > /dev/null 2>&1;
+			$BB rm -f /data/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
+			$BB rm -f /cache/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
+		fi;
+	fi;
+
+	if [ ! -f /system/priv-app/NXTweaks.apk ]; then
+		$BB rm -f /data/app/com.gokhanmoral.*weak*.apk > /dev/null 2>&1;
+		$BB rm -rf /data/data/com.gokhanmoral.*weak* > /dev/null 2>&1;
+		$BB rm -f /data/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
+		$BB rm -f /cache/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
+		$BB cp -a /res/misc/payload/NXTweaks.apk /system/priv-app/NXTweaks.apk;
+		$BB chown 0.0 /system/priv-app/NXTweaks.apk;
+		$BB chmod 644 /system/priv-app/NXTweaks.apk;
+	fi;
+}
+GMTWEAKS;
+
+EXTWEAKS_CLEAN()
+{
+	if [ -f /system/app/Extweaks.apk ] || [ -f /data/app/com.darekxan.extweaks.ap*.apk ]; then
+		$BB rm -f /system/app/Extweaks.apk > /dev/null 2>&1;
+		$BB rm -f /data/app/com.darekxan.extweaks.ap*.apk > /dev/null 2>&1;
+		$BB rm -rf /data/data/com.darekxan.extweaks.app > /dev/null 2>&1;
+		$BB rm -f /data/dalvik-cache/*com.darekxan.extweaks.app* > /dev/null 2>&1;
+	fi;
+}
+EXTWEAKS_CLEAN;
+
+# Create some free space
+#$BB rm -f /res/nxtweaks_md5 > /dev/null 2>&1;
+#$BB rm -rf /res/misc > /dev/null 2>&1;
+$BB rm -rf /res/images > /dev/null 2>&1;
+
+$BB mount -t rootfs -o remount,rw rootfs;
+$BB mount -o remount,rw /system;

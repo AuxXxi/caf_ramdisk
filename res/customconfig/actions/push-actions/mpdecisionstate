@@ -1,0 +1,15 @@
+#!/sbin/busybox sh
+export PATH="/res/customconfig/actions/push-actions:${PATH}";
+
+if [ `pgrep -f push-actions/mpdecisionstate |  wc -l` \< 3 ]; then
+(
+if [ "$intelli_plug_active" == "1" ]; then
+	echo "Intelliplug is active. Disabling mpdecision.";
+	stop mpdecision;
+else
+	echo "Intelliplug is inactive. Enabling mpdecision.";
+	stop mpdescision;
+	start mpdecision;
+fi;
+)&
+fi;
