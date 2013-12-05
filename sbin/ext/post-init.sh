@@ -1,5 +1,8 @@
 #!/system/xbin/busybox sh
 
+# Give device sufficient time to complete crucial loading
+sleep 25;
+
 BB=/system/xbin/busybox
 
 $BB mount -t rootfs -o remount,rw rootfs;
