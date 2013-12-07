@@ -1,5 +1,3 @@
-scaling_max_freq=2265600
-scaling_min_freq=300000
 intelli_plug_active=0
 eco_mode_active=0
 exfat_module=on

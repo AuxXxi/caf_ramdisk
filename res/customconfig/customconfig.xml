@@ -1,13 +1,6 @@
 <settingsRoot>
 <settingsTab name="CPU Control">
 
-	<settingsPane description="You can change max and min frequencies of your device here. 1.26 GHz is minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.26 GHz is also maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.26 GHz, Min 300 MHz)" name="CPU Frequency control">
-
-		<seekBar description="This slider sets maximum frequency of your device." name="Max CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="1267200" reversed="false" step="76800" max="2496000"/>
-
-		<seekBar description="This slider sets minimum frequency of your device." name="Min CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" unit="kHz" min="300000" reversed="false" step="76800" max="1267200"/>
-
-	</settingsPane>
 	<settingsPane description="Intelliplug Hotplug is an intelligient and better hotlug driver then stock mpdecision driver. Recommended for better power saving." name="Intelliplug Hotplug Driver">
 		<spinner description="Intelliplug conflicts with stock mpdecision. It is HIGHLY recommended to stop mpdecision after enabling Intelliplug. Also, if intelliplug is active on reboot, we will take care stopping mpdecision for you." name="Intelliplug Driver" action="generic /sys/module/intelli_plug/parameters/intelli_plug_active">
 			<spinnerItem name="Enable Intelliplug" value="1"/>
@@ -26,7 +19,7 @@
 
 	<settingsPane description="zRAM increases performance by avoiding paging on disk and instead uses a compressed block device in RAM in which paging takes place until it is necessary to use the swap space." name="zRAM">
 
-		<spinner description="zRAM Module settings. Here, you can enable/disable ZRAM or add more compressed RAM for your system. (Default: 100 MB)" name="ZRAM Settings" action="zramtweaks">
+		<spinner description="zRAM Module settings. Here, you can enable/disable ZRAM or add more compressed RAM for your system. (Default: 50 MB)" name="ZRAM Settings" action="zramtweaks">
 			<spinnerItem name="Set ZRAM to 50 MB" value="1"/> 
 			<spinnerItem name="Set ZRAM to 100 MB" value="2"/> 
 			<spinnerItem name="Set ZRAM to 200 MB" value="3"/> 
@@ -100,7 +93,7 @@
 <settingsTab name="Miscellaneous">
 	<settingsPane description="This section controls miscellaneous tweaks of the device." name="Misc Tweaks">
 
-		<spinner description="Enable/Disable Dynamic File Sync. While screen is on, file sync is temporarily deferred, when screen is off, a flush is called to synchronize all outstanding writes. Please note: There may be loss of slight data if device reboots abruptly if Dynamic Fsync is enabled." name="Dynamic FSync" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
+		<spinner description="Enable/Disable Dynamic File Sync. While screen is on, file sync is temporarily deferred, when screen is off, a flush is called to synchronize all outstanding writes. Please note: There may be loss of slight data if device reboots abruptly when Dynamic Fsync is enabled." name="Dynamic FSync" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
