@@ -1,14 +1,37 @@
 <settingsRoot>
 <settingsTab name="CPU Control">
 
-	<settingsPane description="Intelliplug Hotplug is an intelligient and better hotlug driver then stock mpdecision driver. Recommended for better power saving." name="Intelliplug Hotplug Driver">
-		<spinner description="Intelliplug conflicts with stock mpdecision. Therefore, mpdecision will be stopped when Intelliplug is active. Please note, after stoping mpdecision, logcat reads 'touch_boost: failed to send' This is not kernel issue, you can delete power hal lib at your own discretion to stop log spam." name="Intelliplug Driver" action="generic_thermal /sys/module/intelli_plug/parameters/intelli_plug_active">
+	<settingsPane description="Intelliplug Hotplug is an intelligent and better hotplug driver then stock mpdecision driver. Recommended for better power saving." name="Intelliplug Hotplug Driver">
+		<spinner description="Intelliplug conflicts with stock mpdecision. Therefore, mpdecision will be stopped when Intelliplug is active." name="Intelliplug Driver" action="generic_thermal /sys/module/intelli_plug/parameters/intelli_plug_active">
 			<spinnerItem name="Enable Intelliplug" value="1"/>
 			<spinnerItem name="Disable Intelliplug" value="0"/> 
 		</spinner>
 		<spinner description="Eco Mode is a special power savings mode part of the intelli_plug where the kernel automatically reconfigures its decisions in real time and optimizes to use only 2 out of 4 cores. Cores 3 and 4 are turned off completely. Recommended on for power saving and off for performance." name="Eco Mode" action="generic /sys/module/intelli_plug/parameters/eco_mode_active">
 			<spinnerItem name="On" value="1"/> 
 			<spinnerItem name="Off" value="0"/> 
+		</spinner>
+	</settingsPane>
+
+	<settingsPane description="You can change governor of your device here. Governor decides current frequency of your device accordingly." name="Governor control">
+		<spinner description="This will set the active CPU governor. (Default: Intellidemand)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
+			<spinnerItem name="Interactive" value="interactive"/>
+			<spinnerItem name="Intellidemand" value="intellidemand"/>
+			<spinnerItem name="Performance" value="performance"/>
+			<spinnerItem name="Conservative" value="conservative"/>
+			<spinnerItem name="Ondemand" value="ondemand"/>
+			<spinnerItem name="Powersave" value="powersave"/>
+			<spinnerItem name="Userspace" value="userspace"/>
+		</spinner>
+	</settingsPane>
+
+	<settingsPane description="You can change CPU IO scheduler of your device here. (Default: FIOPS)" name="CPU IO Scheduler control">
+		<spinner description="This will set the default IO scheduler for internal, system, data and external sdcard." name="Default IO Scheduler" action="generic /sys/block/mmcblk0/queue/scheduler">
+			<spinnerItem name="ROW" value="row"/>
+			<spinnerItem name="SIO" value="sio"/>
+			<spinnerItem name="BFQ" value="bfq"/>
+			<spinnerItem name="CFQ" value="cfq"/>
+			<spinnerItem name="Deadline" value="deadline"/>
+			<spinnerItem name="FIOPS" value="fiops"/>
 		</spinner>
 	</settingsPane>
 
@@ -34,6 +57,14 @@
 			<spinnerItem name="Aggressive" value="aggressive"/> 
 			<spinnerItem name="Exterminate" value="exterminate"/> 
 		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="Settings for Dirty ratio and Dirty background ratio." name="VM">
+
+		<seekBar description="Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations. Buffer is released on need to free RAM (Default: 20%)" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
+
+		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM (Default: 5%)" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
 
 	</settingsPane>
 
@@ -136,13 +167,45 @@
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
 
-		<checkbox description="Frandom is a Linux kernel random number generator which is 10-50 times faster than what you get from Linux built-in /dev/urandom. In case you face issue with wifi tethering or bluetooth connectivity you may try disabling this option and reboot. (Reboot required)" name="FRANDOM" action="generic_cortex /tmp/frandom_module" label="FRANDOM"/>
+		<spinner description="Frandom is a Linux kernel random number generator which is 10-50 times faster than what you get from Linux built-in /dev/urandom. In case you face issue with wifi tethering or bluetooth connectivity you may try disabling this option and reboot. (Reboot required)" name="FRandom" action="generic_cortex /tmp/frandom_module">
+			<spinnerItem name="Enable" value="on"/> 
+			<spinnerItem name="Disable" value="off"/> 
+		</spinner>
 
-<spinner description="This option allows some cheap USB chargers with > 500ma to be recognized as an AC charger in order to charge at a faster rate." name="Fast Charge" action="generic /sys/kernel/fast_charge/force_fast_charge">
+		<spinner description="This option allows some cheap USB chargers with > 500ma to be recognized as an AC charger in order to charge at a faster rate." name="Fast Charge" action="generic /sys/kernel/fast_charge/force_fast_charge">
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
 
+		<spinner description="Backlight dimmer allows you to adjust the LCD screen brightness lower than is possible with stock. Be careful, you can lower the brightness so much you can barely see it." name="Backlight Dimmer" action="generic /sys/module/lm3630_bl/parameters/backlight_dimmer">
+			<spinnerItem name="Enable" value="Y"/> 
+			<spinnerItem name="Disable" value="N"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="WIFI Settings" name="WIFI">
+
+		<button description="Clean WIFI DHCP IP Lease. Push the button to activate!" name="Clean WIFI Lease" action="push-actions/fix_wifi" label="Clean WIFI Lease"/>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can find GPS and NTP settings and options." name="GPS - NTP">
+
+		<spinner description="GPS-Time-Zone for faster GPS lock! Use your region!" name="GPS Region" action="gpsregion">
+			<spinnerItem name="No GPS Zone changes (default)" value="No_GPS_Zone_changes"/> 
+			<spinnerItem name="Set Asia" value="Asia"/> 
+			<spinnerItem name="Set Europe" value="Europe"/> 
+			<spinnerItem name="Set Oceania" value="Oceania"/> 
+			<spinnerItem name="Set North America" value="North-America"/> 
+			<spinnerItem name="Set South America" value="South-America"/> 
+			<spinnerItem name="Set Africa" value="Africa"/> 
+			<spinnerItem name="Restore original ROM gps.conf" value="Original_ROM_GPS_Restored"/> 
+		</spinner>
+
+		<button description="Click to see your current GPS ZONE" name="GPS ZONE" action="push-actions/gpszonecheck" label="GPS Zone Check"/>
+
+		<button description="Update time via NTP server" name="UPDATE TIME" action="push-actions/time_update" label="Update Time"/>
 
 	</settingsPane>
 
@@ -152,6 +215,8 @@
 	<settingsPane description="Here, you can load kernel modules on boot that will allow some extra functions." name="Kernel Modules">
 
 		<checkbox description="Enable/Disable Exfat module load on boot." name="EXFAT Module" action="generic_cortex /tmp/exfat_module" label="EXFAT Module"/>
+
+		<checkbox description="Enable or Disable EDS Module, (Encrypted Data Store) lets you store your files in the encrypted container to prevent unauthorized access to sensitive information. You will need app from play store (EDS, Paid or Lite)" name="EDS Module" action="generic_cortex /tmp/eds_module" label="EDS Module"/>
 
 		<button description="This displays the currently loaded modules." name="Show Loaded Modules" action="push-actions/show_modules" label="Show Loaded Modules"/>
 

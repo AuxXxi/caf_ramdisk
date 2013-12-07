@@ -26,11 +26,11 @@
 		rmmod exfat_fs.ko;
 		rmmod exfat_core.ko;
 	fi;
-#	if [ "$eds_module" == "on" ]; then
-#		insmod /lib/modules/eds.ko;
-#	else
-#		rmmod eds.ko;
-#	fi;
+	if [ "$eds_module" == "on" ]; then
+		insmod /lib/modules/eds.ko;
+	else
+		rmmod eds.ko;
+	fi;
 #	if [ "$xpad_module" == "on" ]; then
 #		insmod /lib/modules/ff-memless.ko;
 #		insmod /lib/modules/xpad.ko;

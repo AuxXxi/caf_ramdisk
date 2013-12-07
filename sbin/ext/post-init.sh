@@ -15,7 +15,6 @@ $BB mount -o remount,rw /;
 # remove previous bootcheck file
 $BB rm -f /data/.bootcheck 2> /dev/null;
 
-$BB ln -s /system/xbin/busybox /sbin/busybox
 $BB ln -s /system/bin /bin
 $BB ln -s /system/lib /lib
 
@@ -64,6 +63,9 @@ if [ "a$ccxmlsum" != "a`cat /data/.siyah/.ccxmlsum`" ]; then
 	echo "$ccxmlsum" > /data/.siyah/.ccxmlsum;
 fi;
 
+# disable sysctl.conf to prevent ROM interference with tunables
+[ -e /system/etc/sysctl.conf ] && mv /system/etc/sysctl.conf /system/etc/sysctl.conf.bak;
+
 [ ! -f /data/.siyah/default.profile ] && cp -a /res/customconfig/default.profile /data/.siyah/default.profile;
 [ ! -f /data/.siyah/battery.profile ] && cp -a /res/customconfig/battery.profile /data/.siyah/battery.profile;
 [ ! -f /data/.siyah/performance.profile ] && cp -a /res/customconfig/performance.profile /data/.siyah/performance.profile;
@@ -103,7 +105,12 @@ $BB chmod -R 755 /system/lib;
 		ln /dev/erandom /dev/urandom >> /data/nx_modules.log 2>&1;
 		$BB chmod 644 /dev/urandom >> /data/nx_modules.log 2>&1;
 	fi;
-	sleep 30;
+	if [ "$eds_module" == "on" ]; then
+		insmod /lib/modules/eds.ko;
+	else
+		rmmod eds.ko;
+	fi;
+	sleep 20;
 	$BB date > /data/nx_modules.log
 	echo " " >>  /data/nx_modules.log;
 	# order of modules load is important
@@ -123,6 +130,11 @@ $BB chmod -R 755 /system/lib;
 		$BB chmod 644 /dev/random >> /data/nx_modules.log 2>&1;
 		ln /dev/erandom /dev/urandom >> /data/nx_modules.log 2>&1;
 		$BB chmod 644 /dev/urandom >> /data/nx_modules.log 2>&1;
+	fi;
+	if [ "$eds_module" == "on" ]; then
+		insmod /lib/modules/eds.ko;
+	else
+		rmmod eds.ko;
 	fi;
 	echo " " >>  /data/nx_modules.log;
 	echo " " >>  /data/nx_modules.log;
@@ -198,6 +210,9 @@ chmod 666 /tmp/uci_done;
 	sync;
 	sysctl -w vm.drop_caches=1
 	sync;
+
+	$BB mount -o remount,rw /;
+	$BB mount -o remount,rw /system;
 
 	# mark boot completion
 	$BB touch /data/.bootcheck;
