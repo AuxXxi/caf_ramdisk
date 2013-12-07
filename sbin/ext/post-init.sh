@@ -157,16 +157,6 @@ $BB chmod -R 755 /system/lib;
 	fi;
 )&
 
-(
-	# ROOT activation if supersu used
-	if [ -e /system/app/SuperSU.apk ] && [ -e /system/xbin/daemonsu ]; then
-		if [ "`pgrep -f "daemonsu" | wc -l`" -eq "0" ]; then
-			/system/xbin/daemonsu --auto-daemon &
-		fi;
-	fi;
-
-)&
-
 # Apps Install
 # $BB sh /sbin/ext/install.sh;
 chmod 755 /system/priv-app/NXTweaks.apk;
