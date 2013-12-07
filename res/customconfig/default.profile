@@ -1,6 +1,9 @@
 intelli_plug_active=0
 eco_mode_active=0
 exfat_module=on
+auto_oom=on
+oom_config_screen_on=aggressive
+oom_config_screen_off=medium
 zramtweaks=1
 swappiness=0
 uksm_control=off

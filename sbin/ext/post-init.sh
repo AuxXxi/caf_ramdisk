@@ -27,8 +27,20 @@ $BB chmod -R 777 /tmp/;
 $BB chmod 6755 /sbin/ext/*;
 $BB chmod -R 777 /res/;
 
+# oom and mem perm fix
+$BB chmod 666 /sys/module/lowmemorykiller/parameters/cost;
+$BB chmod 666 /sys/module/lowmemorykiller/parameters/adj;
+
+# protect init from oom
+echo "-1000" > /proc/1/oom_score_adj;
+
 # set sysrq to 2 = enable control of console logging level
 echo "2" > /proc/sys/kernel/sysrq;
+
+PIDOFINIT=`pgrep -f "/sbin/ext/post-init.sh"`;
+for i in $PIDOFINIT; do
+	echo "-600" > /proc/${i}/oom_score_adj;
+done;
 
 # enable kmem interface for everyone
 echo "0" > /proc/sys/kernel/kptr_restrict;
@@ -175,6 +187,8 @@ chmod 666 /tmp/uci_done;
 	chmod 777 /data/.siyah/booting;
 	pkill -f "com.gokhanmoral.stweaks.app";
 	nohup $BB sh /res/uci.sh restore;
+	UCI_PID=`pgrep -f "/res/uci.sh"`;
+	echo "-800" > /proc/$UCI_PID/oom_score_adj;
 	echo "1" > /tmp/uci_done;
 
 	# restore all the PUSH Button Actions back to there location
@@ -195,6 +209,10 @@ chmod 666 /tmp/uci_done;
 		sleep 10;
 		COUNTER=$(($COUNTER+1));
 	done;
+
+	# correct oom tuning, if changed by apps/rom
+	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
+	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
 
 	# Clean cached RAM after boot
 	sync;

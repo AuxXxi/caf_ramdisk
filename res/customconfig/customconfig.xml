@@ -16,6 +16,27 @@
 </settingsTab>
 
 <settingsTab name="Memory Control">
+	<settingsPane description="OOM(Out of memory) is undesired state where no additional memory resources can be allocated. You can tune behavior of OOM Killer below." name="OOM Killer">
+
+		<checkbox description="Enable AUTO OOM control using below profiles, disable if you want to set your own OOM tuning via APP or Script." name="Auto OOM" action="generic01 /sys/module/lowmemorykiller/parameters/auto_oom" label="AUTO OOM CONTROL"/>
+
+		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps." name="OOM Level Screen ON" action="oom_config_screen_on">
+			<spinnerItem name="Low" value="low"/> 
+			<spinnerItem name="Medium" value="medium"/> 
+			<spinnerItem name="Default" value="default"/> 
+			<spinnerItem name="Aggressive" value="aggressive"/> 
+			<spinnerItem name="Exterminate" value="exterminate"/> 
+		</spinner>
+
+		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive equals more free RAM but more killed apps." name="OOM Level Screen OFF" action="oom_config_screen_off">
+			<spinnerItem name="Low" value="low"/> 
+			<spinnerItem name="Medium" value="medium"/> 
+			<spinnerItem name="Default" value="default"/> 
+			<spinnerItem name="Aggressive" value="aggressive"/> 
+			<spinnerItem name="Exterminate" value="exterminate"/> 
+		</spinner>
+
+	</settingsPane>
 
 	<settingsPane description="zRAM increases performance by avoiding paging on disk and instead uses a compressed block device in RAM in which paging takes place until it is necessary to use the swap space." name="zRAM">
 
