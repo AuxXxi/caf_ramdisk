@@ -145,18 +145,6 @@ $BB chmod -R 755 /system/lib;
 
 )&
 
-(
-	sleep 35;
-	if [ "$intelli_plug_active" == "1" ]; then
-		echo "Intelliplug is active. Disabling mpdecision.";
-		stop mpdecision;
-	else
-		echo "Intelliplug is inactive. Enabling mpdecision.";
-#		stop mpdecision;
-#		start mpdecision;
-	fi;
-)&
-
 # Apps Install
 # $BB sh /sbin/ext/install.sh;
 chmod 755 /system/priv-app/NXTweaks.apk;

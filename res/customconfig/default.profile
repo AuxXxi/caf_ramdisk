@@ -17,3 +17,6 @@ s2w_mid_posn=700
 s2w_end_posn=830
 s2w_threshold=250
 s2w_swap_coord=0
+enabled=N
+limit_temp_degC=75
+core_limit_temp_degC=75

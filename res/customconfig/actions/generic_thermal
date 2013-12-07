@@ -1,0 +1,30 @@
+#!/sbin/busybox sh
+
+# use this script only if you are tuning existing file!
+# script check if $2 really exist.
+
+if [ "a$2" != "a" ]; then
+
+	filename=$(basename "$2");
+
+	if [ "a$3" == "a" ]; then
+		evalcmd='eval "echo \$$filename"';
+		eval $evalcmd;
+	else
+		evalcmd='eval "$filename=$3"';
+		eval $evalcmd;
+		evalcmd='eval "echo \$$filename"';
+		eval $evalcmd;
+		if [ -f $2 ]; then
+			stop mpdecision;
+			echo "$3" > $2;
+			if [ "$intelli_plug_active" == "1" ]; then
+				stop mpdecision;
+			else
+				stop mpdecision;
+				start mpdecision;
+			fi;
+		fi;
+	fi;
+fi;
+
