@@ -5,7 +5,7 @@ PROFILE=`cat /data/.siyah/.active.profile`;
 
 if [ "$zramtweaks" != 4 ]; then
 	if [ -e /system/xbin/bash ] || [ -e /system/bin/bash ]; then
-		/sbin/zram_stats_ex;
+		/res/customconfig/actions/push-actions/zram_stats_ex;
 	else
 		free;
 	fi;
