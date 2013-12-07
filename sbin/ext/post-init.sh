@@ -5,11 +5,15 @@ sleep 25;
 
 BB=/system/xbin/busybox
 
+# mount partitions to begin optimization
 $BB mount -t rootfs -o remount,rw rootfs;
 $BB mount -o remount,rw /system;
 $BB mount -o remount,rw,nosuid,nodev /cache;
 $BB mount -o remount,rw,nosuid,nodev /data;
 $BB mount -o remount,rw /;
+
+# remove previous bootcheck file
+$BB rm -f /data/.bootcheck 2> /dev/null;
 
 $BB ln -s /system/xbin/busybox /sbin/busybox
 $BB ln -s /system/bin /bin
@@ -141,6 +145,16 @@ $BB chmod -R 755 /system/lib;
 	fi;
 )&
 
+(
+	# ROOT activation if supersu used
+	if [ -e /system/app/SuperSU.apk ] && [ -e /system/xbin/daemonsu ]; then
+		if [ "`pgrep -f "daemonsu" | wc -l`" -eq "0" ]; then
+			/system/xbin/daemonsu --auto-daemon &
+		fi;
+	fi;
+
+)&
+
 # Apps Install
 # $BB sh /sbin/ext/install.sh;
 chmod 755 /system/priv-app/NXTweaks.apk;
@@ -172,13 +186,46 @@ chmod 666 /tmp/uci_done;
 	mount -o remount,rw /system;
 	mount -o remount,rw /;
 
+	COUNTER=0;
+	while [ ! `cat /proc/loadavg | cut -c1-4` \< "3.50" ]; do
+		if [ "$COUNTER" -ge "12" ]; then
+			break;
+		fi;
+		echo "Waiting for CPU to cool down";
+		sleep 10;
+		COUNTER=$(($COUNTER+1));
+	done;
+
+	# Clean cached RAM after boot
+	sync;
+	sysctl -w vm.drop_caches=3
+	sync;
+	sysctl -w vm.drop_caches=1
+	sync;
+
 	# mark boot completion
 	$BB touch /data/.bootcheck;
 	$BB echo "Boot completed on $(date)" > /data/.bootcheck;
 )&
 
-# cleaning
-$BB rm -rf /cache/lost+found/* 2> /dev/null;
-$BB rm -rf /data/lost+found/* 2> /dev/null;
-$BB rm -rf /data/tombstones/* 2> /dev/null;
-$BB rm -rf /data/anr/* 2> /dev/null;
+(
+	# cleaning
+	$BB rm -rf /cache/lost+found/* 2> /dev/null;
+	$BB rm -rf /data/lost+found/* 2> /dev/null;
+	$BB rm -rf /data/tombstones/* 2> /dev/null;
+	$BB rm -rf /data/anr/* 2> /dev/null;
+
+	# critical permissions fix
+	$BB chown -R root:system /sys/devices/system/cpu/;
+	$BB chown -R system:system /data/anr;
+	$BB chown -R root:radio /data/property/;
+	$BB chmod -R 777 /tmp/;
+	$BB chmod -R 6755 /sbin/ext/;
+	$BB chmod -R 0777 /dev/cpuctl/;
+	$BB chmod -R 0777 /data/system/inputmethod/;
+	$BB chmod -R 0777 /sys/devices/system/cpu/;
+	$BB chmod -R 0777 /data/anr/;
+	$BB chmod 0744 /proc/cmdline;
+	$BB chmod -R 0770 /data/property/;
+	$BB chmod -R 0400 /data/tombstones;
+)&
