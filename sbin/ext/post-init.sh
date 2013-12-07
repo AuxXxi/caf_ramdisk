@@ -15,6 +15,8 @@ $BB ln -s /system/xbin/busybox /sbin/busybox
 $BB ln -s /system/bin /bin
 $BB ln -s /system/lib /lib
 
+$BB mkdir /tmp;
+
 # fix permissions for tmp init files
 $BB chown -R root:system /tmp/;
 $BB chmod -R 777 /tmp/;
