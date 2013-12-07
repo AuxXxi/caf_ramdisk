@@ -5,6 +5,7 @@ zramtweaks=1
 swappiness=0
 uksm_control=off
 Dyn_fsync_active=0
+frandom_module=off
 force_fast_charge=0
 doubletap2wake=0
 sweep2wake=0

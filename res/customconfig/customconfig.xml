@@ -98,6 +98,8 @@
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
 
+		<checkbox description="Frandom is a Linux kernel random number generator which is 10-50 times faster than what you get from Linux built-in /dev/urandom. In case you face issue with wifi tethering or bluetooth connectivity you may try disabling this option and reboot. (Reboot required)" name="FRANDOM" action="generic_cortex /tmp/frandom_module" label="FRANDOM"/>
+
 <spinner description="This option allows some cheap USB chargers with > 500ma to be recognized as an AC charger in order to charge at a faster rate." name="Fast Charge" action="generic /sys/kernel/fast_charge/force_fast_charge">
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
