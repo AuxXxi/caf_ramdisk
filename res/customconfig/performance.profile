@@ -1,4 +1,0 @@
-scaling_max_freq=2265600
-scaling_min_freq=300000
-exfat_module=on
-cortexbrain_uksm_control=off

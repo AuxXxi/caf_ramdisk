@@ -8,8 +8,6 @@ BB=/system/xbin/busybox
 # mount partitions to begin optimization
 $BB mount -t rootfs -o remount,rw rootfs;
 $BB mount -o remount,rw /system;
-$BB mount -o remount,rw,nosuid,nodev /cache;
-$BB mount -o remount,rw,nosuid,nodev /data;
 $BB mount -o remount,rw /;
 
 # remove previous bootcheck file
@@ -67,10 +65,6 @@ fi;
 [ -e /system/etc/sysctl.conf ] && mv /system/etc/sysctl.conf /system/etc/sysctl.conf.bak;
 
 [ ! -f /data/.siyah/default.profile ] && cp -a /res/customconfig/default.profile /data/.siyah/default.profile;
-[ ! -f /data/.siyah/battery.profile ] && cp -a /res/customconfig/battery.profile /data/.siyah/battery.profile;
-[ ! -f /data/.siyah/performance.profile ] && cp -a /res/customconfig/performance.profile /data/.siyah/performance.profile;
-[ ! -f /data/.siyah/extreme_performance.profile ] && cp -a /res/customconfig/extreme_performance.profile /data/.siyah/extreme_performance.profile;
-[ ! -f /data/.siyah/extreme_battery.profile ] && cp -a /res/customconfig/extreme_battery.profile /data/.siyah/extreme_battery.profile;
 
 $BB chmod -R 0777 /data/.siyah/;
 
@@ -158,7 +152,6 @@ $BB chmod -R 755 /system/lib;
 )&
 
 # Apps Install
-# $BB sh /sbin/ext/install.sh;
 chmod 755 /system/priv-app/NXTweaks.apk;
 
 echo "0" > /tmp/uci_done;
