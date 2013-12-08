@@ -1,17 +1,6 @@
 <settingsRoot>
 <settingsTab name="CPU Control">
 
-	<settingsPane description="Intelliplug Hotplug is an intelligent and better hotplug driver then stock mpdecision driver. Recommended for better power saving." name="Intelliplug Hotplug Driver">
-		<spinner description="Intelliplug conflicts with stock mpdecision. Therefore, mpdecision will be stopped when Intelliplug is active." name="Intelliplug Driver" action="generic_thermal /sys/module/intelli_plug/parameters/intelli_plug_active">
-			<spinnerItem name="Enable Intelliplug" value="1"/>
-			<spinnerItem name="Disable Intelliplug" value="0"/> 
-		</spinner>
-		<spinner description="Eco Mode is a special power savings mode part of the intelli_plug where the kernel automatically reconfigures its decisions in real time and optimizes to use only 2 out of 4 cores. Cores 3 and 4 are turned off completely. Recommended on for power saving and off for performance." name="Eco Mode" action="generic /sys/module/intelli_plug/parameters/eco_mode_active">
-			<spinnerItem name="On" value="1"/> 
-			<spinnerItem name="Off" value="0"/> 
-		</spinner>
-	</settingsPane>
-
 	<settingsPane description="You can change governor of your device here. Governor decides current frequency of your device accordingly." name="Governor control">
 		<spinner description="This will set the active CPU governor. (Default: Intellidemand)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
 			<spinnerItem name="Interactive" value="interactive"/>
@@ -140,24 +129,6 @@
 
 	</settingsPane>
 </settingsTab>
-
-<settingsTab name="Thermal Control">
-
-	<settingsPane description="Control throttling temperatures and thermal driver to govern here." name="Thermal Control">
-
-		<spinner description="Thermal Management. (Recommended Intellithermal.)" name="Thermal Driver" action="generic_thermal /sys/module/msm_thermal/parameters/enabled">
-			<spinnerItem name="Intellithermal (Better)" value="Y"/> 
-			<spinnerItem name="Thermald (Stock)" value="N"/> 
-		</spinner>
-
-		<seekBar description="Intellithermal control parameter. Recommended 75." name="Frequency Throttle Temperature" action="generic /sys/module/msm_thermal/parameters/limit_temp_degC" unit="Celcius" min="50" reversed="false" step="1" max="90"/>
-
-		<seekBar description="Intellithermal control parameter. Recommended 75." name="Core Throttle Temperature" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="Celcius" min="50" reversed="false" step="1" max="90"/>
-
-	</settingsPane>
-
-</settingsTab>
-
 
 <settingsTab name="Miscellaneous">
 	<settingsPane description="This section controls miscellaneous tweaks of the device." name="Misc Tweaks">
