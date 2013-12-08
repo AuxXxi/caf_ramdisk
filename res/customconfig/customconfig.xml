@@ -1,10 +1,16 @@
 <settingsRoot>
 <settingsTab name="CPU Control">
 
+	<settingsPane description="You can change max and min frequencies of your device here. 1.26 GHz is minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.26 GHz is also maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.26 GHz, Min 300 MHz)" name="CPU Frequency control">
+
+		<seekBar description="This slider sets maximum frequency of your device." name="Max CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="1267200" reversed="false" step="76800" max="2496000"/>
+		<seekBar description="This slider sets minimum frequency of your device." name="Min CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" unit="kHz" min="300000" reversed="false" step="76800" max="1267200"/>
+
+	</settingsPane>
+
 	<settingsPane description="You can change governor of your device here. Governor decides current frequency of your device accordingly." name="Governor control">
-		<spinner description="This will set the active CPU governor. (Default: Intellidemand)" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
+		<spinner description="This will set the active CPU governor." name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
 			<spinnerItem name="Interactive" value="interactive"/>
-			<spinnerItem name="Intellidemand" value="intellidemand"/>
 			<spinnerItem name="Performance" value="performance"/>
 			<spinnerItem name="Conservative" value="conservative"/>
 			<spinnerItem name="Ondemand" value="ondemand"/>
