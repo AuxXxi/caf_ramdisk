@@ -587,6 +587,7 @@ service mdnsd /system/bin/mdnsd
     oneshot
 
 service postinit /sbin/ext/post-init.sh
-    class core
+    class late_start
     user root
+    disabled
     oneshot

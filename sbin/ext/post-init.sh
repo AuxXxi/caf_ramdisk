@@ -1,8 +1,5 @@
 #!/system/xbin/busybox sh
 
-# Give device sufficient time to complete crucial loading
-sleep 25;
-
 BB=/system/xbin/busybox
 
 # mount partitions to begin optimization
@@ -10,9 +7,24 @@ $BB mount -t rootfs -o remount,rw rootfs;
 $BB mount -o remount,rw /system;
 $BB mount -o remount,rw /;
 
+#if [ -e /system/lib/hw/power.msm8974.so ]; then
+#	$BB mv /system/lib/hw/power.msm8974.so /system/lib/hw/power.msm8974.so.bak;
+#fi
+
+#if [ -e /system/bin/thermal-engine-hh ]; then
+#	$BB mv /system/bin/thermal-engine-hh /system/bin/thermal-engine-hh-bak;
+#fi
+
+# Avoid random freq behavior, apply stock freq behavior to begin with
+echo "300000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+echo "2265600" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+echo "intellidemand" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+
+# Give device sufficient time to complete crucial loading
+# sleep 25;
+
 # remove previous bootcheck file
 $BB rm -f /data/.bootcheck 2> /dev/null;
-
 $BB ln -s /system/bin /bin
 $BB ln -s /system/lib /lib
 
@@ -196,6 +208,11 @@ chmod 666 /tmp/uci_done;
 	# correct oom tuning, if changed by apps/rom
 	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
 	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
+
+	# Avoid random freq behavior, apply stock freq behavior to begin with
+	echo "300000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq	
+	echo "2265600" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+	echo "intellidemand" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
 	# Clean cached RAM after boot
 	sync;

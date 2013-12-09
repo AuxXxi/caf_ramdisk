@@ -1,7 +1,7 @@
-scaling_max_freq=2265600
-scaling_min_freq=300000
-scaling_governor=ondemand
+scaling_governor=intellidemand
 scheduler=fiops
+simple_laziness=6
+simple_ramp_threshold=5
 exfat_module=off
 eds_module=off
 auto_oom=on

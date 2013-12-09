@@ -1,15 +1,9 @@
 <settingsRoot>
 <settingsTab name="CPU Control">
 
-	<settingsPane description="You can change max and min frequencies of your device here. 1.26 GHz is minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.26 GHz is also maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.26 GHz, Min 300 MHz)" name="CPU Frequency control">
-
-		<seekBar description="This slider sets maximum frequency of your device." name="Max CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="1267200" reversed="false" step="76800" max="2496000"/>
-		<seekBar description="This slider sets minimum frequency of your device." name="Min CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" unit="kHz" min="300000" reversed="false" step="76800" max="1267200"/>
-
-	</settingsPane>
-
 	<settingsPane description="You can change governor of your device here. Governor decides current frequency of your device accordingly." name="Governor control">
 		<spinner description="This will set the active CPU governor." name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
+			<spinnerItem name="Intellidemand" value="intellidemand"/>
 			<spinnerItem name="Interactive" value="interactive"/>
 			<spinnerItem name="Performance" value="performance"/>
 			<spinnerItem name="Conservative" value="conservative"/>
@@ -19,7 +13,7 @@
 		</spinner>
 	</settingsPane>
 
-	<settingsPane description="You can change CPU IO scheduler of your device here. (Default: FIOPS)" name="CPU IO Scheduler control">
+	<settingsPane description="You can change CPU IO scheduler of your device here." name="CPU IO Scheduler control">
 		<spinner description="This will set the default IO scheduler for internal, system, data and external sdcard." name="Default IO Scheduler" action="generic /sys/block/mmcblk0/queue/scheduler">
 			<spinnerItem name="ROW" value="row"/>
 			<spinnerItem name="SIO" value="sio"/>
@@ -28,6 +22,11 @@
 			<spinnerItem name="Deadline" value="deadline"/>
 			<spinnerItem name="FIOPS" value="fiops"/>
 		</spinner>
+	</settingsPane>
+
+	<settingsPane description="Chaos kernel uses SIMPLE governor by default for GPU. You can fine tune following parameters of SIMPLE governor according to your requirement. Default settings are balanced for power and performance." name="GPU Control">
+		<seekBar description="This adjusts the number of times the governor skips ramp down requests. Higher == better performance (more battery  drain) Default 6." name="Laziness" action="generic /sys/module/msm_kgsl_core/parameters/simple_laziness" unit=" " min="0" reversed="false" step="1" max="10"/>
+		<seekBar description="This adjusts the threshold to ramp up or down GPU frequencies. Lower == better performance (more battery drain) Default 5." name="Ramp Threshold" action="generic /sys/module/msm_kgsl_core/parameters/simple_ramp_threshold" unit=" " min="0" reversed="false" step="1" max="10"/>
 	</settingsPane>
 
 </settingsTab>
@@ -65,7 +64,7 @@
 
 	<settingsPane description="zRAM increases performance by avoiding paging on disk and instead uses a compressed block device in RAM in which paging takes place until it is necessary to use the swap space." name="zRAM">
 
-		<spinner description="zRAM Module settings. Here, you can enable/disable ZRAM or add more compressed RAM for your system. (Default: 50 MB)" name="ZRAM Settings" action="zramtweaks">
+		<spinner description="zRAM Module settings. Here, you can enable/disable ZRAM or add more compressed RAM for your system." name="ZRAM Settings" action="zramtweaks">
 			<spinnerItem name="Set ZRAM to 50 MB" value="1"/> 
 			<spinnerItem name="Set ZRAM to 100 MB" value="2"/> 
 			<spinnerItem name="Set ZRAM to 200 MB" value="3"/> 
