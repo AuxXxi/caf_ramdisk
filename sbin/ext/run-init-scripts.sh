@@ -2,6 +2,12 @@
 
 BB=/system/xbin/busybox;
 
+if [ ! -e /system/etc/init.d ]; then
+	$BB mkdir /system/etc/init.d
+	$BB chown -R root.root /system/etc/init.d;
+	$BB chmod -R 755 /system/etc/init.d;
+fi;
+
 if [ -d /system/etc/init.d ]; then
 	chmod 755 /system/etc/init.d/*;
 	$BB run-parts /system/etc/init.d/;

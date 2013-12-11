@@ -1,4 +1,6 @@
-scaling_governor=intellidemand
+scaling_max_freq=2265600
+scaling_min_freq=300000
+scaling_governor=interactive
 scheduler=fiops
 simple_laziness=6
 simple_ramp_threshold=5
