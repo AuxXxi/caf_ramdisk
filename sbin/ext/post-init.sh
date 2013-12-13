@@ -209,12 +209,19 @@ chmod 666 /tmp/uci_done;
 	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
 	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
 
-	# Avoid random freq behavior, apply stock freq behavior to begin with
+	# Restart thermal engine and set correct frequencies;
+	stop thermal-engine
 	echo "$scaling_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 	echo "$scaling_min_frequency" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq	
 	echo "$scaling_max_frequency" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+	sleep 2
+	start thermal-engine
 
 	# Clean cached RAM after boot
+	if [ "$COUNTER" -le "8" ]; then
+		sleep 15;
+	fi;
+	
 	sync;
 	sysctl -w vm.drop_caches=3
 	sync;
