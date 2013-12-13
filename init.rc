@@ -78,9 +78,6 @@ loglevel 3
     # Directory for putting things only root should see.
     mkdir /mnt/secure 0700 root root
 
-    # Directory for putting things only root should see.
-    mkdir /mnt/secure 0700 root root
-
     # Directory for staging bindmounts
     mkdir /mnt/secure/staging 0700 root root
 
