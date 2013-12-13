@@ -11,7 +11,6 @@ oom_config_screen_on=aggressive
 oom_config_screen_off=medium
 dirty_ratio=20
 dirty_background_ratio=5
-zramtweaks=1
 swappiness=0
 uksm_control=off
 Dyn_fsync_active=0

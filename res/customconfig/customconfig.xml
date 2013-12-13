@@ -73,33 +73,6 @@
 
 	</settingsPane>
 
-	<settingsPane description="zRAM increases performance by avoiding paging on disk and instead uses a compressed block device in RAM in which paging takes place until it is necessary to use the swap space." name="zRAM">
-
-		<spinner description="zRAM Module settings. Here, you can enable/disable ZRAM or add more compressed RAM for your system." name="ZRAM Settings" action="zramtweaks">
-			<spinnerItem name="Set ZRAM to 50 MB" value="1"/> 
-			<spinnerItem name="Set ZRAM to 100 MB" value="2"/> 
-			<spinnerItem name="Set ZRAM to 200 MB" value="3"/> 
-			<spinnerItem name="Turn ZRAM off!" value="4"/> 
-		</spinner>
-
-		<spinner description="If you have enabled swap, higher number = the more the system will swap. Keeping swappiness '0' means swapping occurs only when your device runs out of memory, increasing swappiness will result more battery consumption. Please note SWAP is effective only if zRAM is ON.(Default: 0)"
-			name="swappiness" action="generic /proc/sys/vm/swappiness">
-			<spinnerItem name="0" value="0"/> 
-			<spinnerItem name="10" value="10"/> 
-			<spinnerItem name="20" value="20"/> 
-			<spinnerItem name="30" value="30"/> 
-			<spinnerItem name="40" value="40"/> 
-			<spinnerItem name="50" value="50"/> 
-			<spinnerItem name="60" value="60"/> 
-			<spinnerItem name="70" value="70"/> 
-			<spinnerItem name="80" value="80"/> 
-			<spinnerItem name="90" value="90"/> 
-			<spinnerItem name="100" value="100"/> 
-		</spinner>
-
-		<button description="zRAM state check" name="zRAM STATS" action="push-actions/zramstats" label="zRAM Stats"/>
-	</settingsPane>
-
 	<settingsPane description="UKSM is new technique for KSM." name="UKSM">
 
 		<checkbox description="Enable/Disable 'Ultra KSM Control'. This will merge some memory but consumes more CPU and battery. You will need to reboot your device for changes to take effect." name="Ultra KSM Control" action="generic_cortex /tmp/uksm_control" label="Ultra KSM Control"/>
