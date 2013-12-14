@@ -7,21 +7,10 @@ $BB mount -t rootfs -o remount,rw rootfs;
 $BB mount -o remount,rw /system;
 $BB mount -o remount,rw /;
 
-#if [ -e /system/lib/hw/power.msm8974.so ]; then
-#	$BB mv /system/lib/hw/power.msm8974.so /system/lib/hw/power.msm8974.so.bak;
-#fi
-
-#if [ -e /system/bin/thermal-engine-hh ]; then
-#	$BB mv /system/bin/thermal-engine-hh /system/bin/thermal-engine-hh-bak;
-#fi
-
 # Avoid random freq behavior, apply stock freq behavior to begin with
 echo "300000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo "2265600" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-
-# Give device sufficient time to complete crucial loading
-# sleep 25;
 
 # remove previous bootcheck file
 $BB rm -f /data/.bootcheck 2> /dev/null;
@@ -192,9 +181,6 @@ chmod 666 /tmp/uci_done;
 	pkill -f "com.gokhanmoral.stweaks.app";
 	$BB rm -f /data/.siyah/booting;
 
-	mount -o remount,rw /system;
-	mount -o remount,rw /;
-
 	COUNTER=0;
 	while [ ! `cat /proc/loadavg | cut -c1-4` \< "3.50" ]; do
 		if [ "$COUNTER" -ge "12" ]; then
@@ -217,20 +203,6 @@ chmod 666 /tmp/uci_done;
 	sleep 2
 	start thermal-engine
 
-	# Clean cached RAM after boot
-	if [ "$COUNTER" -le "8" ]; then
-		sleep 15;
-	fi;
-	
-	sync;
-	sysctl -w vm.drop_caches=3
-	sync;
-	sysctl -w vm.drop_caches=1
-	sync;
-
-	$BB mount -o remount,rw /;
-	$BB mount -o remount,rw /system;
-
 	# mark boot completion
 	$BB touch /data/.bootcheck;
 	$BB echo "Boot completed on $(date)" > /data/.bootcheck;
@@ -243,17 +215,4 @@ chmod 666 /tmp/uci_done;
 	$BB rm -rf /data/tombstones/* 2> /dev/null;
 	$BB rm -rf /data/anr/* 2> /dev/null;
 
-	# critical permissions fix
-	$BB chown -R root:system /sys/devices/system/cpu/;
-	$BB chown -R system:system /data/anr;
-	$BB chown -R root:radio /data/property/;
-	$BB chmod -R 777 /tmp/;
-	$BB chmod -R 6755 /sbin/ext/;
-	$BB chmod -R 0777 /dev/cpuctl/;
-	$BB chmod -R 0777 /data/system/inputmethod/;
-	$BB chmod -R 0777 /sys/devices/system/cpu/;
-	$BB chmod -R 0777 /data/anr/;
-	$BB chmod 0744 /proc/cmdline;
-	$BB chmod -R 0770 /data/property/;
-	$BB chmod -R 0400 /data/tombstones;
 )&
