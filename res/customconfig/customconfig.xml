@@ -1,5 +1,5 @@
 <settingsRoot>
-<settingsTab name="CPU Control">
+<settingsTab name="CPU/GPU Control">
 
 	<settingsPane description="You can change max and min frequencies of your device here. 1.26 GHz is minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.26 GHz is also maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.26 GHz, Min 300 MHz)" name="CPU Frequency control">
 
@@ -35,9 +35,27 @@
 		</spinner>
 	</settingsPane>
 
-	<settingsPane description="Chaos kernel uses SIMPLE governor by default for GPU. You can fine tune following parameters of SIMPLE governor according to your requirement. Default settings are balanced for power and performance." name="GPU Control">
-		<seekBar description="This adjusts the number of times the governor skips ramp down requests. Higher == better performance (more battery  drain) Default 6." name="Laziness" action="generic /sys/module/msm_kgsl_core/parameters/simple_laziness" unit=" " min="0" reversed="false" step="1" max="10"/>
-		<seekBar description="This adjusts the threshold to ramp up or down GPU frequencies. Lower == better performance (more battery drain) Default 5." name="Ramp Threshold" action="generic /sys/module/msm_kgsl_core/parameters/simple_ramp_threshold" unit=" " min="0" reversed="false" step="1" max="10"/>
+	<settingsPane description="You can change GPU settings here and customize as per your use." name="GPU Control">
+		<spinner description="This will set maximum frequency GPU can attend. Default 450 MHz." name="Max GPU frequency" action="generic /sys/devices/fdb00000.qcom,kgsl-3d0/devfreq/fdb00000.qcom,kgsl-3d0/max_freq">
+			<spinnerItem name="450 MHz" value="450000000"/>
+			<spinnerItem name="320 MHz" value="320000000"/>
+			<spinnerItem name="200 Mhz" value="200000000"/>
+			<spinnerItem name="27 MHz" value="27000000"/>
+		</spinner>
+		<spinner description="This will set minimum frequency GPU can attend. Default 200 MHz." name="Min GPU frequency" action="generic /sys/devices/fdb00000.qcom,kgsl-3d0/devfreq/fdb00000.qcom,kgsl-3d0/min_freq">
+			<spinnerItem name="450 MHz" value="450000000"/>
+			<spinnerItem name="320 MHz" value="320000000"/>
+			<spinnerItem name="200 Mhz" value="200000000"/>
+			<spinnerItem name="27 MHz" value="27000000"/>
+		</spinner>
+		<seekBar description="This adjusts the number of times the governor polls for load. Lower == better performance (more battery  drain) Default 10." name="Polling Interval" action="generic /sys/devices/fdb00000.qcom,kgsl-3d0/devfreq/fdb00000.qcom,kgsl-3d0/polling_interval" unit="ms" min="2" reversed="false" step="2" max="30"/>
+		<spinner description="This will set the active GPU governor." name="Default GPU Governor" action="generic /sys/devices/fdb00000.qcom,kgsl-3d0/devfreq/fdb00000.qcom,kgsl-3d0/governor">
+			<spinnerItem name="MSM-Adreno-TZ" value="msm-adreno-tz"/>
+			<spinnerItem name="Performance" value="performance"/>
+			<spinnerItem name="Powersave" value="powersave"/>
+			<spinnerItem name="Simple Ondemand" value="simple_ondemand"/>
+			<spinnerItem name="Userspace" value="userspace"/>
+		</spinner>
 	</settingsPane>
 
 </settingsTab>
@@ -87,11 +105,20 @@
 
 <settingsTab name="Wake Control">
 
+	<settingsPane description="Power Key Toggle" name="PKT">
+
+		<spinner description="If enabled, turning the screen off with the power button disables s2w and dt2w to save battery. When you turn the screen back on, s2w and dt2w return to their previous settings. If the screen times out, s2w/dt2w are not disabled this is only if you use the power button to turn it off." name="PKT" action="generic /sys/module/qpnp_power_on/parameters/pwrkey_suspend">
+			<spinnerItem name="Enabled" value="Y"/> 
+			<spinnerItem name="Disabled" value="N"/> 
+		</spinner>
+
+	</settingsPane>
+
 	<settingsPane description="DoubleTap2Wake Function" name="DT2W">
 
 		<spinner description="This option enables the doubletap2wake (AKA KnockKnock) feature (may cause more battery drain when in pocket)" name="DT2W" action="generic /sys/android_touch/doubletap2wake">
-			<spinnerItem name="On" value="1"/> 
-			<spinnerItem name="Off" value="0"/> 
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
 	</settingsPane>
@@ -99,8 +126,13 @@
 	<settingsPane description="Sweep2Wake Function" name="S2W">
 
 		<spinner description="This option enables the sweep2wake feature (may cause more battery drain when in pocket)" name="S2W" action="generic /sys/android_touch/sweep2wake">
-			<spinnerItem name="On" value="1"/> 
-			<spinnerItem name="Off" value="0"/> 
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
+		</spinner>
+
+		<spinner description="This option enables the sweep2sleep feature. With screen on swipe in the black bottom bar from right to left do power off the screen. This feature can be used only if S2W is enabled. However, S2W will be disabled functionally but you can combine S2S with DT2W." name="S2S" action="generic /sys/android_touch/s2w_s2sonly">
+			<spinnerItem name="Enabled" value="1"/> 
+			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
 		<seekBar description="This slider sets start position of S2W. Default 400." name="Start Position" action="generic /sys/kernel/s2w_parameters/s2w_start_posn" unit="" min="0" reversed="false" step="10" max="1280"/>
@@ -121,6 +153,18 @@
 
 <settingsTab name="Miscellaneous">
 	<settingsPane description="This section controls miscellaneous tweaks of the device." name="Misc Tweaks">
+
+	<spinner description="There are two color presets: stock and slightly cooler. When this option is enabled you will have slighly cooler and vivid color preset. For changes to take effect use power button to lock screen off and then on." name="Color Tweak" action="generic /sys/module/mdss_dsi/parameters/color_preset">
+			<spinnerItem name="Enable" value="1"/> 
+			<spinnerItem name="Disable" value="0"/> 
+		</spinner>
+
+	<spinner description="Enable/Disable GENTLE_FAIR_SLEEPER kernel scheduler feature. Disabling same may provide better UI responsiveness." name="Gentle Fair Sleeper" action="generic sys/kernel/sched/gentle_fair_sleepers">
+			<spinnerItem name="Enable" value="1"/> 
+			<spinnerItem name="Disable" value="0"/> 
+		</spinner>
+
+
 
 		<spinner description="Enable/Disable Dynamic File Sync. While screen is on, file sync is temporarily deferred, when screen is off, a flush is called to synchronize all outstanding writes. Please note: There may be loss of slight data if device reboots abruptly when Dynamic Fsync is enabled." name="Dynamic FSync" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
 			<spinnerItem name="Enable" value="1"/> 
@@ -184,4 +228,5 @@
 
 	</settingsPane>
 </settingsTab>
+
 </settingsRoot>

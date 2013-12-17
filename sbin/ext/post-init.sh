@@ -102,8 +102,6 @@ $BB chmod -R 755 /system/lib;
 	fi;
 	if [ "$eds_module" == "on" ]; then
 		insmod /lib/modules/eds.ko;
-	else
-		rmmod eds.ko;
 	fi;
 	sleep 20;
 	$BB date > /data/nx_modules.log
@@ -128,8 +126,6 @@ $BB chmod -R 755 /system/lib;
 	fi;
 	if [ "$eds_module" == "on" ]; then
 		insmod /lib/modules/eds.ko;
-	else
-		rmmod eds.ko;
 	fi;
 	echo " " >>  /data/nx_modules.log;
 	echo " " >>  /data/nx_modules.log;
