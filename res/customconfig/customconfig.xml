@@ -1,5 +1,5 @@
 <settingsRoot>
-<settingsTab name="CPU/GPU Control">
+<settingsTab name="CPU Control">
 
 	<settingsPane description="You can change max and min frequencies of your device here. 1.26 GHz is minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.26 GHz is also maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.26 GHz, Min 300 MHz)" name="CPU Frequency control">
 
@@ -34,6 +34,10 @@
 			<spinnerItem name="ZEN" value="zen"/>
 		</spinner>
 	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="GPU Control">
 
 	<settingsPane description="You can change GPU settings here and customize as per your use." name="GPU Control">
 		<spinner description="This will set maximum frequency GPU can attend. Default 450 MHz." name="Max GPU frequency" action="generic /sys/devices/fdb00000.qcom,kgsl-3d0/devfreq/fdb00000.qcom,kgsl-3d0/max_freq">
@@ -154,10 +158,12 @@
 <settingsTab name="Miscellaneous">
 	<settingsPane description="This section controls miscellaneous tweaks of the device." name="Misc Tweaks">
 
-	<spinner description="There are two color presets: stock and slightly cooler. When this option is enabled you will have slighly cooler and vivid color preset. For changes to take effect use power button to lock screen off and then on." name="Color Tweak" action="generic /sys/module/mdss_dsi/parameters/color_preset">
+		<spinner description="There are two color presets: stock and slightly cooler. When this option is enabled you will have slighly cooler and vivid color preset. For changes to take effect use power button to lock screen off and then on." name="Color Tweak" action="generic /sys/module/mdss_dsi/parameters/color_preset">
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
+
+		<seekBar description="This slider helps increasing/decreasing vibrator strength. Default 70." name="Vibrator Strength" action="generic /sys/devices/virtual/timed_output/vibrator/amp" unit=" " min="0" reversed="false" step="1" max="100"/>
 
 	<spinner description="Enable/Disable GENTLE_FAIR_SLEEPER kernel scheduler feature. Disabling same may provide better UI responsiveness." name="Gentle Fair Sleeper" action="generic sys/kernel/sched/gentle_fair_sleepers">
 			<spinnerItem name="Enable" value="1"/> 

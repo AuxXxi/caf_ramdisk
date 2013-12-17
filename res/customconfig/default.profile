@@ -15,6 +15,7 @@ dirty_ratio=20
 dirty_background_ratio=5
 uksm_control=off
 color_preset=0
+amp=70
 gentle_fair_sleepers=1
 Dyn_fsync_active=0
 frandom_module=off
