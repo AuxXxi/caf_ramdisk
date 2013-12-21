@@ -7,8 +7,14 @@ $BB mount -t rootfs -o remount,rw rootfs;
 $BB mount -o remount,rw /system;
 $BB mount -o remount,rw /;
 
+# We are not using mpdecision, let's not have touch_boost spam by powerhal
+if [ -e /system/lib/hw/power.msm8974.so ]; then
+	$BB mv /system/lib/hw/power.msm8974.so /system/lib/hw/power.msm8974.so.bak;
+fi
+
 # Avoid random freq behavior, apply stock freq behavior to begin with
-echo "300000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+# Also boost minimum freq to boot w/o lag
+echo "1267200" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo "2265600" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
@@ -90,7 +96,7 @@ $BB chmod -R 755 /system/lib;
 	fi;
 	if [ "$frandom_module" == "on" ]; then
 		echo "Loading FRANDOM Module" >> /data/nx_modules.log;
-		$BB insmod /lib/modules/frandom.ko >> /data/nx_modules.log 2>&1;
+#		$BB insmod /lib/modules/frandom.ko >> /data/nx_modules.log 2>&1;
 		$BB chmod 644 /dev/frandom >> /data/nx_modules.log 2>&1;
 		$BB chmod 644 /dev/erandom >> /data/nx_modules.log 2>&1;
 		mv /dev/random /dev/random.ori >> /data/nx_modules.log 2>&1;
@@ -99,9 +105,6 @@ $BB chmod -R 755 /system/lib;
 		$BB chmod 644 /dev/random >> /data/nx_modules.log 2>&1;
 		ln /dev/erandom /dev/urandom >> /data/nx_modules.log 2>&1;
 		$BB chmod 644 /dev/urandom >> /data/nx_modules.log 2>&1;
-	fi;
-	if [ "$eds_module" == "on" ]; then
-		insmod /lib/modules/eds.ko;
 	fi;
 	sleep 20;
 	$BB date > /data/nx_modules.log
@@ -112,27 +115,17 @@ $BB chmod -R 755 /system/lib;
 		$BB insmod /lib/modules/exfat_fs.ko >> /data/nx_modules.log 2>&1;
 		$BB insmod /lib/modules/exfat_core.ko >> /data/nx_modules.log 2>&1;
 	fi;
-	if [ "$frandom_module" == "on" ]; then
-		echo "Loading FRANDOM Module" >> /data/nx_modules.log;
-		$BB insmod /lib/modules/frandom.ko >> /data/nx_modules.log 2>&1;
-		$BB chmod 644 /dev/frandom >> /data/nx_modules.log 2>&1;
-		$BB chmod 644 /dev/erandom >> /data/nx_modules.log 2>&1;
-		mv /dev/random /dev/random.ori >> /data/nx_modules.log 2>&1;
-		mv /dev/urandom /dev/urandom.ori >> /data/nx_modules.log 2>&1;
-		ln /dev/frandom /dev/random >> /data/nx_modules.log 2>&1;
-		$BB chmod 644 /dev/random >> /data/nx_modules.log 2>&1;
-		ln /dev/erandom /dev/urandom >> /data/nx_modules.log 2>&1;
-		$BB chmod 644 /dev/urandom >> /data/nx_modules.log 2>&1;
-	fi;
-	if [ "$eds_module" == "on" ]; then
-		insmod /lib/modules/eds.ko;
-	fi;
 	echo " " >>  /data/nx_modules.log;
 	echo " " >>  /data/nx_modules.log;
 	echo "Loaded Modules on boot:" >> /data/nx_modules.log;
 	echo " " >>  /data/nx_modules.log;
 	$BB lsmod >> /data/nx_modules.log
 )&
+
+# Let morpheus watch over
+# nohup /sbin/ext/morpheus.sh;
+# CORTEX=$(pgrep -f "/sbin/ext/morpheus.sh");
+# echo "-900" > /proc/"$CORTEX"/oom_score_adj;
 
 
 (
@@ -189,15 +182,40 @@ chmod 666 /tmp/uci_done;
 
 	# correct oom tuning, if changed by apps/rom
 	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
-	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
+#	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
 
-	# Restart thermal engine and set correct frequencies;
+	# Use intellithermal and intelli hotplug;
 	stop thermal-engine
+	stop mpdecision
 	echo "$scaling_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-	echo "$scaling_min_frequency" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq	
-	echo "$scaling_max_frequency" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+	echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq	
+	echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+	echo "$scaling_governor" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+	echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq	
+	echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
+	echo "$scaling_governor" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
+	echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq	
+	echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
+	echo "$scaling_governor" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+	echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq	
+	echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
 	sleep 2
-	start thermal-engine
+	echo "Y" > /sys/module/msm_thermal/parameters/enabled
+	echo "12" > /sys/module/msm_thermal/parameters/core_control_mask
+	echo "15" > /sys/module/msm_thermal/parameters/freq_control_mask
+	echo "250" > /sys/module/msm_thermal/parameters/poll_ms
+	echo "75" > /sys/module/msm_thermal/parameters/core_limit_temp_degC
+	echo "80" > /sys/module/msm_thermal/parameters/limit_temp_degC
+	echo "0" > /sys/module/msm_thermal/parameters/thermal_limit_low
+	echo "16" > /sys/module/msm_thermal/parameters/thermal_limit_high
+	echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
+	echo "3" > /sys/module/intelli_plug/parameters/nr_fshift
+	echo "8" > /sys/module/intelli_plug/parameters/nr_run_hysteresis
+	if [ "$auto_eco_mode" == "2" ]; then
+		echo "1" > /sys/module/intelli_plug/parameters/eco_mode_active
+	else
+		echo "0" > /sys/module/intelli_plug/parameters/eco_mode_active
+	fi
 
 	# mark boot completion
 	$BB touch /data/.bootcheck;

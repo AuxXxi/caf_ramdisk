@@ -20,6 +20,7 @@
 			<spinnerItem name="SmartassH3" value="smartassH3"/>
 			<spinnerItem name="Userspace" value="userspace"/>
 		</spinner>
+
 	</settingsPane>
 
 	<settingsPane description="You can change CPU IO scheduler of your device here." name="CPU IO Scheduler control">
@@ -77,14 +78,6 @@
 			<spinnerItem name="Exterminate" value="exterminate"/> 
 		</spinner>
 
-		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive equals more free RAM but more killed apps." name="OOM Level Screen OFF" action="oom_config_screen_off">
-			<spinnerItem name="Low" value="low"/> 
-			<spinnerItem name="Medium" value="medium"/> 
-			<spinnerItem name="Default" value="default"/> 
-			<spinnerItem name="Aggressive" value="aggressive"/> 
-			<spinnerItem name="Exterminate" value="exterminate"/> 
-		</spinner>
-
 	</settingsPane>
 
 	<settingsPane description="Settings for Dirty ratio and Dirty background ratio." name="VM">
@@ -127,14 +120,14 @@
 
 	</settingsPane>
 
-	<settingsPane description="Sweep2Wake Function" name="S2W">
+	<settingsPane description="Sweep2Wake/Sweep2Sleep Function" name="S2W and S2S">
 
-		<spinner description="This option enables the sweep2wake feature (may cause more battery drain when in pocket)" name="S2W" action="generic /sys/android_touch/sweep2wake">
+		<spinner description="This option enables the sweep2wake/sweep2sleep feature. When screen is off, you can turn on by swiping LEFT to RIGHT and when screen on, swipe on the Navigation Bar from RIGHT to LEFT to turn off the screen.(may cause more battery drain when in pocket)" name="S2W/S2S" action="generic /sys/android_touch/sweep2wake">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
 
-		<spinner description="This option enables the sweep2sleep feature. With screen on swipe in the black bottom bar from right to left do power off the screen. This feature can be used only if S2W is enabled. However, S2W will be disabled functionally but you can combine S2S with DT2W." name="S2S" action="generic /sys/android_touch/s2w_s2sonly">
+		<spinner description="This option enables the sweep2sleep feature and disables sweep2wake feature functionally. When screen on, swipe on the Navigation Bar from RIGHT to LEFT to turn off the screen. This feature can be utilized only if S2W is enabled. You may combine 'S2S only' with DT2W." name="S2S Only override" action="generic /sys/android_touch/s2w_s2sonly">
 			<spinnerItem name="Enabled" value="1"/> 
 			<spinnerItem name="Disabled" value="0"/> 
 		</spinner>
@@ -159,8 +152,8 @@
 	<settingsPane description="This section controls miscellaneous tweaks of the device." name="Misc Tweaks">
 
 		<spinner description="There are two color presets: stock and slightly cooler. When this option is enabled you will have slighly cooler and vivid color preset. For changes to take effect use power button to lock screen off and then on." name="Color Tweak" action="generic /sys/module/mdss_dsi/parameters/color_preset">
-			<spinnerItem name="Enable" value="1"/> 
-			<spinnerItem name="Disable" value="0"/> 
+			<spinnerItem name="Vivid" value="1"/> 
+			<spinnerItem name="Stock" value="0"/> 
 		</spinner>
 
 		<seekBar description="This slider helps increasing/decreasing vibrator strength. Default 70." name="Vibrator Strength" action="generic /sys/devices/virtual/timed_output/vibrator/amp" unit=" " min="0" reversed="false" step="1" max="100"/>
@@ -169,8 +162,6 @@
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
-
-
 
 		<spinner description="Enable/Disable Dynamic File Sync. While screen is on, file sync is temporarily deferred, when screen is off, a flush is called to synchronize all outstanding writes. Please note: There may be loss of slight data if device reboots abruptly when Dynamic Fsync is enabled." name="Dynamic FSync" action="generic /sys/kernel/dyn_fsync/Dyn_fsync_active">
 			<spinnerItem name="Enable" value="1"/> 
@@ -219,14 +210,9 @@
 
 	</settingsPane>
 
-</settingsTab>
-<settingsTab name="Modules">
-
 	<settingsPane description="Here, you can load kernel modules on boot that will allow some extra functions." name="Kernel Modules">
 
 		<checkbox description="Enable/Disable Exfat module load on boot." name="EXFAT Module" action="generic_cortex /tmp/exfat_module" label="EXFAT Module"/>
-
-		<checkbox description="Enable or Disable EDS Module, (Encrypted Data Store) lets you store your files in the encrypted container to prevent unauthorized access to sensitive information. You will need app from play store (EDS, Paid or Lite)" name="EDS Module" action="generic_cortex /tmp/eds_module" label="EDS Module"/>
 
 		<button description="This displays the currently loaded modules." name="Show Loaded Modules" action="push-actions/show_modules" label="Show Loaded Modules"/>
 
