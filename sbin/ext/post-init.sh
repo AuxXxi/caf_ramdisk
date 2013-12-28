@@ -7,16 +7,21 @@ $BB mount -t rootfs -o remount,rw rootfs;
 $BB mount -o remount,rw /system;
 $BB mount -o remount,rw /;
 
-# We are not using mpdecision, let's not have touch_boost spam by powerhal
-if [ -e /system/lib/hw/power.msm8974.so ]; then
-	$BB mv /system/lib/hw/power.msm8974.so /system/lib/hw/power.msm8974.so.bak;
-fi
-
 # Avoid random freq behavior, apply stock freq behavior to begin with
 # Also boost minimum freq to boot w/o lag
 echo "1267200" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo "2265600" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+
+# We are using mpdecision, let's restore powerhal
+if [ -e /system/lib/hw/power.msm8974.so.bak ]; then
+	$BB mv /system/lib/hw/power.msm8974.so.bak /system/lib/hw/power.msm8974.so;
+fi
+
+# We are using inbuilt thermal engine, let's restore if someone else messed up
+if [ -e /system/bin/thermal-engine-hh-bak ]; then
+	$BB mv /system/bin/thermal-engine-hh-bak /system/bin/thermal-engine-hh;
+fi
 
 # remove previous bootcheck file
 $BB rm -f /data/.bootcheck 2> /dev/null;
@@ -123,10 +128,11 @@ $BB chmod -R 755 /system/lib;
 )&
 
 # Let morpheus watch over
-# nohup /sbin/ext/morpheus.sh;
-# CORTEX=$(pgrep -f "/sbin/ext/morpheus.sh");
-# echo "-900" > /proc/"$CORTEX"/oom_score_adj;
-
+# make powersuspend to use kernel mode instead of userspace
+echo "0" > /sys/kernel/power_suspend/power_suspend_mode
+nohup /sbin/ext/morpheus.sh;
+CORTEX=$(pgrep -f "/sbin/ext/morpheus.sh");
+echo "-900" > /proc/"$CORTEX"/oom_score_adj;
 
 (
 	if [ "$uksm_control" == "on" ]; then
@@ -180,42 +186,32 @@ chmod 666 /tmp/uci_done;
 		COUNTER=$(($COUNTER+1));
 	done;
 
+	# general queue tweaks
+	for i in /sys/block/*/queue; do
+		echo 512 > $i/nr_requests;
+		echo 2 > $i/rq_affinity;
+		echo 0 > $i/nomerges;
+		echo 0 > $i/add_random;
+		echo 0 > $i/rotational;
+	done;
+
+	# Set custom frequencies settings
+        echo "$scaling_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+        echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq        
+        echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+        echo "$scaling_governor" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+        echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq        
+        echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
+        echo "$scaling_governor" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
+        echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq        
+        echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
+        echo "$scaling_governor" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+        echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq        
+        echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
+
 	# correct oom tuning, if changed by apps/rom
 	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
-#	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
-
-	# Use intellithermal and intelli hotplug;
-	stop thermal-engine
-	stop mpdecision
-	echo "$scaling_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-	echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq	
-	echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-	echo "$scaling_governor" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
-	echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq	
-	echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
-	echo "$scaling_governor" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
-	echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq	
-	echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
-	echo "$scaling_governor" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
-	echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq	
-	echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
-	sleep 2
-	echo "Y" > /sys/module/msm_thermal/parameters/enabled
-	echo "12" > /sys/module/msm_thermal/parameters/core_control_mask
-	echo "15" > /sys/module/msm_thermal/parameters/freq_control_mask
-	echo "250" > /sys/module/msm_thermal/parameters/poll_ms
-	echo "75" > /sys/module/msm_thermal/parameters/core_limit_temp_degC
-	echo "80" > /sys/module/msm_thermal/parameters/limit_temp_degC
-	echo "0" > /sys/module/msm_thermal/parameters/thermal_limit_low
-	echo "16" > /sys/module/msm_thermal/parameters/thermal_limit_high
-	echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
-	echo "3" > /sys/module/intelli_plug/parameters/nr_fshift
-	echo "8" > /sys/module/intelli_plug/parameters/nr_run_hysteresis
-	if [ "$auto_eco_mode" == "2" ]; then
-		echo "1" > /sys/module/intelli_plug/parameters/eco_mode_active
-	else
-		echo "0" > /sys/module/intelli_plug/parameters/eco_mode_active
-	fi
+	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
 
 	# mark boot completion
 	$BB touch /data/.bootcheck;
@@ -228,5 +224,4 @@ chmod 666 /tmp/uci_done;
 	$BB rm -rf /data/lost+found/* 2> /dev/null;
 	$BB rm -rf /data/tombstones/* 2> /dev/null;
 	$BB rm -rf /data/anr/* 2> /dev/null;
-
 )&
