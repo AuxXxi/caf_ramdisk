@@ -1,12 +1,21 @@
 <settingsRoot>
 <settingsTab name="CPU Control">
 
-	<settingsPane description="You can change max and min frequencies of your device here. 1.26 GHz is minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.26 GHz is also maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.26 GHz, Min 300 MHz)" name="CPU Frequency control">
+	<settingsPane description="You can change max and min frequencies of your device here. 1.34 GHz is the minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.19 GHz is the maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.26 GHz, Min 268.8 MHz) Please note scaling frequencies are dynamically changed by mpdecision. However, morpheus mode will try setting below values on screen on/off events." name="CPU Frequency control">
 
-		<seekBar description="This slider sets maximum frequency of your device." name="Max CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="1267200" reversed="false" step="76800" max="2496000"/>
-		<seekBar description="This slider sets minimum frequency of your device." name="Min CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" unit="kHz" min="300000" reversed="false" step="76800" max="1267200"/>
+                <seekBar description="This slider sets maximum frequency of your device." name="Max CPU Frequency" action="genericfreq_normal /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="1344000" reversed="false" step="153600" max="2265600"/>
+                <seekBar description="This slider sets minimum frequency of your device." name="Min CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" unit="kHz" min="268800" reversed="false" step="153600" max="1190400"/>
 
-	</settingsPane>
+		<spinner description="Use this to overclock CPU above max stock frequency. This feature will be activated only if Max CPU frequency is set to its max value. (2265600 kHz)" name="Overclock CPU" action="genericfreq_oc /tmp/scaling_max_freq_oc">
+			<spinnerItem name="Disabled" value="2265600"/>
+			<spinnerItem name="2.342 GHz" value="2342400"/>
+			<spinnerItem name="2.419 GHz" value="2419200"/>
+			<spinnerItem name="2.496 GHz" value="2496000"/>
+		</spinner>
+
+		<seekBar description="This slider sets maximum frequency of your device when screen is off." name="Max CPU Suspend Frequency" action="generic_cortex /tmp/scaling_max_suspend_freq" unit="kHz" min="1344000" reversed="false" step="153600" max="2265600"/>
+		<seekBar description="This slider sets minimum frequency of your device when screen is off." name="Min CPU Suspend Frequency" action="generic_cortex /tmp/scaling_min_suspend_freq" unit="kHz" min="268800" reversed="false" step="153600" max="1190400"/>
+        </settingsPane>
 
 	<settingsPane description="You can change governor of your device here. Governor decides current frequency of your device accordingly." name="Governor control">
 		<spinner description="This will set the active CPU governor." name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
@@ -16,15 +25,33 @@
 			<spinnerItem name="Interactive" value="interactive"/>
 			<spinnerItem name="Ondemand" value="ondemand"/>
 			<spinnerItem name="Performance" value="performance"/>
-			<spinnerItem name="Powersave" value="powersave"/>
 			<spinnerItem name="SmartassH3" value="smartassH3"/>
 			<spinnerItem name="Userspace" value="userspace"/>
 		</spinner>
-
+		<spinner description="This will set the active CPU governor when screen is off." name="Default CPU Sleep Governor" action="generic_cortex /tmp/scaling_suspend_governor">
+			<spinnerItem name="AbyssplugV2" value="abyssplugv2"/>
+			<spinnerItem name="Conservative" value="conservative"/>
+			<spinnerItem name="Intellidemand" value="intellidemand"/>
+			<spinnerItem name="Interactive" value="interactive"/>
+			<spinnerItem name="Ondemand" value="ondemand"/>
+			<spinnerItem name="Performance" value="performance"/>
+			<spinnerItem name="SmartassH3" value="smartassH3"/>
+			<spinnerItem name="Userspace" value="userspace"/>
+		</spinner>
 	</settingsPane>
 
 	<settingsPane description="You can change CPU IO scheduler of your device here." name="CPU IO Scheduler control">
 		<spinner description="This will set the default IO scheduler for internal, system, data and external sdcard." name="Default IO Scheduler" action="generic /sys/block/mmcblk0/queue/scheduler">
+			<spinnerItem name="BFQ" value="bfq"/>
+			<spinnerItem name="CFQ" value="cfq"/>
+			<spinnerItem name="Deadline" value="deadline"/>
+			<spinnerItem name="FIOPS" value="fiops"/>
+			<spinnerItem name="ROW" value="row"/>
+			<spinnerItem name="SIO" value="sio"/>
+			<spinnerItem name="VR" value="vr"/>
+			<spinnerItem name="ZEN" value="zen"/>
+		</spinner>
+		<spinner description="This will set the default IO scheduler for internal, system, data and external sdcard when screen is off." name="Default IO Sleep Scheduler" action="generic_cortex /tmp/suspend_scheduler">
 			<spinnerItem name="BFQ" value="bfq"/>
 			<spinnerItem name="CFQ" value="cfq"/>
 			<spinnerItem name="Deadline" value="deadline"/>
@@ -43,18 +70,19 @@
 	<settingsPane description="You can change GPU settings here and customize as per your use." name="GPU Control">
 		<spinner description="This will set maximum frequency GPU can attend. Default 450 MHz." name="Max GPU frequency" action="generic /sys/devices/fdb00000.qcom,kgsl-3d0/devfreq/fdb00000.qcom,kgsl-3d0/max_freq">
 			<spinnerItem name="450 MHz" value="450000000"/>
+			<spinnerItem name="389 MHz" value="389000000"/>
 			<spinnerItem name="320 MHz" value="320000000"/>
 			<spinnerItem name="200 Mhz" value="200000000"/>
-			<spinnerItem name="27 MHz" value="27000000"/>
 		</spinner>
 		<spinner description="This will set minimum frequency GPU can attend. Default 200 MHz." name="Min GPU frequency" action="generic /sys/devices/fdb00000.qcom,kgsl-3d0/devfreq/fdb00000.qcom,kgsl-3d0/min_freq">
 			<spinnerItem name="450 MHz" value="450000000"/>
+			<spinnerItem name="389 MHz" value="389000000"/>
 			<spinnerItem name="320 MHz" value="320000000"/>
 			<spinnerItem name="200 Mhz" value="200000000"/>
-			<spinnerItem name="27 MHz" value="27000000"/>
 		</spinner>
 		<seekBar description="This adjusts the number of times the governor polls for load. Lower == better performance (more battery  drain) Default 10." name="Polling Interval" action="generic /sys/devices/fdb00000.qcom,kgsl-3d0/devfreq/fdb00000.qcom,kgsl-3d0/polling_interval" unit="ms" min="2" reversed="false" step="2" max="30"/>
 		<spinner description="This will set the active GPU governor." name="Default GPU Governor" action="generic /sys/devices/fdb00000.qcom,kgsl-3d0/devfreq/fdb00000.qcom,kgsl-3d0/governor">
+			<spinnerItem name="Conservative" value="conservative"/>
 			<spinnerItem name="MSM-Adreno-TZ" value="msm-adreno-tz"/>
 			<spinnerItem name="Performance" value="performance"/>
 			<spinnerItem name="Powersave" value="powersave"/>
@@ -78,13 +106,21 @@
 			<spinnerItem name="Exterminate" value="exterminate"/> 
 		</spinner>
 
+		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps." name="OOM Level Screen OFF" action="oom_config_screen_off">
+			<spinnerItem name="Low" value="low"/> 
+			<spinnerItem name="Medium" value="medium"/> 
+			<spinnerItem name="Default" value="default"/> 
+			<spinnerItem name="Aggressive" value="aggressive"/> 
+			<spinnerItem name="Exterminate" value="exterminate"/> 
+		</spinner>
+
 	</settingsPane>
 
 	<settingsPane description="Settings for Dirty ratio and Dirty background ratio." name="VM">
 
 		<seekBar description="Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations. Buffer is released on need to free RAM (Default: 20%)" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
 
-		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM (Default: 5%)" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
+		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM (Default: 15%)" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
 
 	</settingsPane>
 
@@ -93,9 +129,6 @@
 		<checkbox description="Enable/Disable 'Ultra KSM Control'. This will merge some memory but consumes more CPU and battery. You will need to reboot your device for changes to take effect." name="Ultra KSM Control" action="generic_cortex /tmp/uksm_control" label="Ultra KSM Control"/>
 		<button description="Apply Ultra KSM changes on-the-fly." name=" " action="push-actions/uksmchange" label="Apply UKSM changes"/>
 		<button description="Ultra KSM state check. Memory samepage merging is not quick process. So, stats may show 0 MB initially." name="Ultra KSM STATS" action="push-actions/uksmstats" label="Ultra KSM Stats"/>
-
-	<button description="Clean RAM cache. This will release all cached and buffered RAM" name="CLEAN RAM CACHE" action="push-actions/clean_ram_cache" label="Clean RAM Cache"/>
-		
 
 	</settingsPane>
 </settingsTab>
@@ -148,17 +181,53 @@
 	</settingsPane>
 </settingsTab>
 
-<settingsTab name="Miscellaneous">
-	<settingsPane description="This section controls miscellaneous tweaks of the device." name="Misc Tweaks">
+<settingsTab name="Thermal Control">
 
-		<spinner description="There are two color presets: stock and slightly cooler. When this option is enabled you will have slighly cooler and vivid color preset. For changes to take effect use power button to lock screen off and then on." name="Color Tweak" action="generic /sys/module/mdss_dsi/parameters/color_preset">
-			<spinnerItem name="Vivid" value="1"/> 
-			<spinnerItem name="Stock" value="0"/> 
+	<settingsPane description="Set temperature limits at which device starts throttling. Increasing these limits will increase performance of device at the cost of over heating." name="Temperature Control">
+
+		<seekBar description="This slider sets device temperature limit at which throttling will start. Stock 60. Recommended 70." name="Frequency Throttle Temperature" action="generic /sys/module/msm_thermal/parameters/limit_temp" unit="Celcius" min="60" reversed="false" step="1" max="95"/>
+
+		<seekBar description="This slider sets device temperature limit at which throttling will start when screen is off. Stock 60. Recommended 65." name="Frequency Throttle Suspend Temperature" action="generic_cortex /tmp/limit_temp_suspend" unit="Celcius" min="60" reversed="false" step="1" max="95"/>
+
+		<seekBar description="This slider sets core temperature limit at which throttling will start. Stock 80. Recommended 85." name="Core Throttle Temperature" action="generic /sys/module/msm_thermal/parameters/core_limit_temp" unit="Celcius" min="60" reversed="false" step="1" max="105"/>
+
+		<seekBar description="This slider sets core temperature limit at which throttling will start when screen is off. Stock 80. Recommended 80." name="Core Throttle Suspend Temperature" action="generic_cortex /tmp/core_limit_temp_suspend" unit="Celcius" min="60" reversed="false" step="1" max="105"/>
+
+	</settingsPane>
+
+	<settingsPane description="Set hysteresis value for temperature limits. When throttling temperature is reached, device will start throttling until temperature is reduced by hysteresis value. Do not change these values unless you are completely sure." name="Hysteresis Control">
+
+		<seekBar description="This slider sets hysteresis value for frequency throttle temperature. Stock 10. Recommended 5." name="Frequency Throttle Temperature Hysteresis" action="generic /sys/module/msm_thermal/parameters/temp_hysteresis" unit="Celcius" min="0" reversed="false" step="1" max="10"/>
+
+		<seekBar description="This slider sets hysteresis value for core throttle temperature. Stock 10. Recommended 5." name="Core Throttle Temperature Hysteresis" action="generic /sys/module/msm_thermal/parameters/core_temp_hysteresis" unit="Celcius" min="0" reversed="false" step="1" max="10"/>
+
+	<seekBar description="This slider sets number of frequency steps to be considered while throttling. Stock 2. Recommended 2." name="Frequency Stepping" action="generic /sys/module/msm_thermal/parameters/freq_step" unit="step(s)" min="1" reversed="false" step="1" max="3"/>
+
+	</settingsPane>
+
+
+</settingsTab>
+
+
+<settingsTab name="Tweaks">
+	<settingsPane description="This section controls kernel tweaks of the device." name="Kernel Tweaks">
+
+		<spinner description="Enable or Disable the background-process 'Morpheus'. If you disable it, you may lose the function that set different settings for screen state (ON or OFF). We recommend to leave this option enabled to protect CPU frequency overrides, save more power and more integrations coming soon." name="Morpheus Mode" action="morpheus_background_process">
+			<spinnerItem name="Morpheus give me RED pill!" value="1"/> 
+			<spinnerItem name="Morpheus go away!" value="0"/> 
 		</spinner>
 
-		<seekBar description="This slider helps increasing/decreasing vibrator strength. Default 70." name="Vibrator Strength" action="generic /sys/devices/virtual/timed_output/vibrator/amp" unit=" " min="0" reversed="false" step="1" max="100"/>
+		<checkbox description="Enable or Disable IPv6 Network. Depends on morpheus mode." name="IPv6 Tweaks" action="generic_cortex /tmp/morpheus_ipv6" label="IPv6"/>
 
-	<spinner description="Enable/Disable GENTLE_FAIR_SLEEPER kernel scheduler feature. Disabling same may provide better UI responsiveness." name="Gentle Fair Sleeper" action="generic sys/kernel/sched/gentle_fair_sleepers">
+		<spinner description="There are two color presets: stock and slightly cooler. When this option is enabled you will have slighly cooler and vivid color preset. For changes to take effect use power button to lock screen off and then on." name="Color Tweak" action="generic /sys/module/mdss_dsi/parameters/color_preset">
+			<spinnerItem name="Disabled" value="0"/> 
+			<spinnerItem name="Stock" value="2"/> 
+			<spinnerItem name="Vivid" value="1"/> 
+		</spinner>
+
+		<seekBar description="This slider helps increasing/decreasing vibrator strength. Default 75." name="Vibrator Strength" action="generic /sys/devices/virtual/timed_output/vibrator/amp" unit=" " min="0" reversed="false" step="1" max="100"/>
+
+	<spinner description="Sleeper Fairness is a concept used by CFS (Default task scheduler) which treat sleeping/waiting tasks as if they were in a run queue. This implies tasks which spend most of the time waiting for an user input and such will get a fair share of CPU when they need it. Disabling Gentle Fair Sleeper could improve UI responsiveness but may increase battery consumption to some level." name="Gentle Fair Sleeper" action="generic sys/kernel/sched/gentle_fair_sleepers">
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
@@ -184,7 +253,14 @@
 		</spinner>
 
 	</settingsPane>
+</settingsTab>
 
+<settingsTab name="Miscellaneous">
+	<settingsPane description="Cached RAM is RAM occupied by the applications and background process for faster loading of same." name="Cached RAM">
+
+		<button description="This will release all cached and buffered RAM" name="CLEAN RAM CACHE" action="push-actions/clean_ram_cache" label="Clean RAM Buffer"/>
+
+	</settingsPane>
 	<settingsPane description="WIFI Settings" name="WIFI">
 
 		<button description="Clean WIFI DHCP IP Lease. Push the button to activate!" name="Clean WIFI Lease" action="push-actions/fix_wifi" label="Clean WIFI Lease"/>
