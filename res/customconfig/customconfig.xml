@@ -1,20 +1,49 @@
 <settingsRoot>
 <settingsTab name="CPU Control">
 
-	<settingsPane description="You can change max and min frequencies of your device here. 1.34 GHz is the minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.19 GHz is the maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.26 GHz, Min 268.8 MHz) Please note scaling frequencies are dynamically changed by mpdecision. However, morpheus mode will try setting below values on screen on/off events." name="CPU Frequency control">
-
-                <seekBar description="This slider sets maximum frequency of your device." name="Max CPU Frequency" action="genericfreq_normal /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="1344000" reversed="false" step="153600" max="2265600"/>
-                <seekBar description="This slider sets minimum frequency of your device." name="Min CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" unit="kHz" min="268800" reversed="false" step="153600" max="1190400"/>
-
-		<spinner description="Use this to overclock CPU above max stock frequency. This feature will be activated only if Max CPU frequency is set to its max value. (2265600 kHz)" name="Overclock CPU" action="genericfreq_oc /tmp/scaling_max_freq_oc">
+	<settingsPane description="You can change max and min frequencies of your device here. 1.190 GHz is the minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.036 GHz is the maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.265 GHz, Min 300 MHz) Please note scaling frequencies are dynamically changed by mpdecision. However, morpheus mode will try setting below values on screen on/off events." name="CPU Frequency control">
+		<spinner description="This sets maximum frequency of your device. Default 2.265 GHz." name="Max CPU Frequency" action="genericfreq_normal /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq">
+			<spinnerItem name="1.190 GHz" value="1190400"/>
+			<spinnerItem name="1.267 GHz" value="1267200"/>
+			<spinnerItem name="1.497 GHz" value="1497600"/>
+			<spinnerItem name="1.574 GHz" value="1574400"/>
+			<spinnerItem name="1.728 GHz" value="1728000"/>
+			<spinnerItem name="1.958 GHz" value="1958400"/>
+			<spinnerItem name="2.265 GHz" value="2265600"/>
+		</spinner>
+		<spinner description="This sets minimum frequency of your device. Default 300 MHz." name="Min CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq">
+			<spinnerItem name="300 MHz" value="300000"/>
+			<spinnerItem name="422 MHz" value="422400"/>
+			<spinnerItem name="652 MHz" value="652800"/>
+			<spinnerItem name="729 MHz" value="729600"/>
+			<spinnerItem name="883 MHz" value="883200"/>
+			<spinnerItem name="960 MHz" value="960000"/>
+			<spinnerItem name="1.036 GHz" value="1036800"/>
+		</spinner>
+		<spinner description="Use this to overclock CPU above max stock frequency. This feature will be activated only if Max CPU frequency is set to its max value. (2.265 GHz)" name="Overclock CPU" action="genericfreq_oc /tmp/scaling_max_freq_oc">
 			<spinnerItem name="Disabled" value="2265600"/>
 			<spinnerItem name="2.342 GHz" value="2342400"/>
 			<spinnerItem name="2.419 GHz" value="2419200"/>
 			<spinnerItem name="2.496 GHz" value="2496000"/>
 		</spinner>
-
-		<seekBar description="This slider sets maximum frequency of your device when screen is off." name="Max CPU Suspend Frequency" action="generic_cortex /tmp/scaling_max_suspend_freq" unit="kHz" min="1344000" reversed="false" step="153600" max="2265600"/>
-		<seekBar description="This slider sets minimum frequency of your device when screen is off." name="Min CPU Suspend Frequency" action="generic_cortex /tmp/scaling_min_suspend_freq" unit="kHz" min="268800" reversed="false" step="153600" max="1190400"/>
+		<spinner description="This sets maximum frequency of your device when screen is off." name="Max CPU Suspend Frequency" action="generic_cortex /tmp/scaling_max_suspend_freq">
+			<spinnerItem name="1.190 GHz" value="1190400"/>
+			<spinnerItem name="1.267 GHz" value="1267200"/>
+			<spinnerItem name="1.497 GHz" value="1497600"/>
+			<spinnerItem name="1.574 GHz" value="1574400"/>
+			<spinnerItem name="1.728 GHz" value="1728000"/>
+			<spinnerItem name="1.958 GHz" value="1958400"/>
+			<spinnerItem name="2.265 GHz" value="2265600"/>
+		</spinner>
+		<spinner description="This sets minimum frequency of your device when screen is off." name="Min CPU Suspend Frequency" action="generic_cortex /tmp/scaling_min_suspend_freq">
+			<spinnerItem name="300 MHz" value="300000"/>
+			<spinnerItem name="422 MHz" value="422400"/>
+			<spinnerItem name="652 MHz" value="652800"/>
+			<spinnerItem name="729 MHz" value="729600"/>
+			<spinnerItem name="883 MHz" value="883200"/>
+			<spinnerItem name="960 MHz" value="960000"/>
+			<spinnerItem name="1.036 GHz" value="1036800"/>
+		</spinner>
         </settingsPane>
 
 	<settingsPane description="You can change governor of your device here. Governor decides current frequency of your device accordingly." name="Governor control">
