@@ -25,9 +25,13 @@ fi
 
 # remove previous bootcheck file
 $BB rm -f /data/.bootcheck 2> /dev/null;
+
+# symlinks
 $BB ln -s /system/bin /bin
 $BB ln -s /system/lib /lib
+$BB chmod -R 777 /sys/module
 
+# needed for morpheus
 $BB mkdir /tmp;
 
 # fix permissions for tmp init files
@@ -76,13 +80,40 @@ fi;
 # disable sysctl.conf to prevent ROM interference with tunables
 [ -e /system/etc/sysctl.conf ] && mv /system/etc/sysctl.conf /system/etc/sysctl.conf.bak;
 
+# reset profiles auto trigger to be used by kernel ADMIN, in case of need, if new value added in default profiles
+# just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
+RESET_MAGIC=4;
+if [ ! -e /data/.siyah/reset_profiles ]; then
+	echo "0" > /data/.siyah/reset_profiles;
+fi;
+if [ "$(cat /data/.siyah/reset_profiles)" -eq "$RESET_MAGIC" ]; then
+	echo "No need to reset NXTweaks profiles.";
+else
+	rm -f /data/.siyah/*.profile;
+	echo "$RESET_MAGIC" > /data/.siyah/reset_profiles;
+fi;
+
 [ ! -f /data/.siyah/default.profile ] && cp -a /res/customconfig/default.profile /data/.siyah/default.profile;
+[ ! -f /data/.siyah/battery.profile ] && cp -a /res/customconfig/battery.profile /data/.siyah/battery.profile;
+[ ! -f /data/.siyah/performance.profile ] && cp -a /res/customconfig/performance.profile /data/.siyah/performance.profile;
+
 
 $BB chmod -R 0777 /data/.siyah/;
 
 . /res/customconfig/customconfig-helper;
 read_defaults;
 read_config;
+
+if [ "$gamma_correction" == "on" ]; then
+	# tune screen colors on boot
+	echo "78 87 89 91 94 96 101 109 111 121 126 131 120 116 110 99 84 71 61 52 40 33 20" > /sys/module/dsi_panel/kgamma_bn
+	echo "78 87 89 91 94 96 101 109 111 121 126 131 120 116 110 99 84 71 61 52 40 33 20" > /sys/module/dsi_panel/kgamma_bp
+	echo "73 73 75 78 81 84 90 100 105 117 124 130 121 117 111 100 85 73 64 58 50 37 21" > /sys/module/dsi_panel/kgamma_gn
+	echo "73 73 75 78 81 84 90 100 105 117 124 130 121 117 111 100 85 73 64 58 50 37 21" > /sys/module/dsi_panel/kgamma_gp
+	echo "0 10 17 27 37 45 56 72 83 107 112 121 128 123 117 106 91 78 68 62 53 38 22" > /sys/module/dsi_panel/kgamma_rn
+	echo "0 10 17 27 37 45 56 72 83 100 112 121 128 123 117 106 91 78 68 62 53 38 22" > /sys/module/dsi_panel/kgamma_rp
+	echo "30" > /sys/module/dsi_panel/kgamma_w
+fi;
 
 ######################################
 # Loading Modules
@@ -212,6 +243,9 @@ chmod 666 /tmp/uci_done;
 	# correct oom tuning, if changed by apps/rom
 	$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
 	$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
+
+	# kill radio logcat to sdcard
+	$BB pkill -f "logcat -b radio -v time";
 
 	# mark boot completion
 	$BB touch /data/.bootcheck;

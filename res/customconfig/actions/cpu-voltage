@@ -1,0 +1,48 @@
+#!/sbin/busybox sh
+
+PROFILE=`cat /data/.siyah/.active.profile`;
+CPU_VOLT_SWITCH=`cat /data/.siyah/${PROFILE}.profile | grep cpu_voltage_switch=on | wc -l`;
+
+if [ "a$3" == "a" ]; then
+	evalcmd='eval "echo \$CPUVOLT$2"';
+	eval $evalcmd;
+else
+	evalcmd='eval "CPUVOLT$2=$3"';
+	eval $evalcmd;
+	evalcmd='eval "echo \$CPUVOLT$2"';
+	eval $evalcmd;
+
+	if [ "$CPU_VOLT_SWITCH" -eq "1" ]; then
+		echo "300000 $CPUVOLT1" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "345600 $CPUVOLT2" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "422400 $CPUVOLT3" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "499200 $CPUVOLT4" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "576000 $CPUVOLT5" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "652800 $CPUVOLT6" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "729600 $CPUVOLT7" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "806400 $CPUVOLT8" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "883200 $CPUVOLT8" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "960000 $CPUVOLT10" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1036800 $CPUVOLT11" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1113600 $CPUVOLT12" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1190400 $CPUVOLT13" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1267200 $CPUVOLT14" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1344000 $CPUVOLT15" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1420800 $CPUVOLT16" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1497600 $CPUVOLT17" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1574400 $CPUVOLT18" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1651200 $CPUVOLT19" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1728000 $CPUVOLT20" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1804800 $CPUVOLT21" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1881600 $CPUVOLT22" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "1958400 $CPUVOLT23" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "2035200 $CPUVOLT24" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "2112000 $CPUVOLT25" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "2188800 $CPUVOLT26" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "2265600 $CPUVOLT27" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "2342400 $CPUVOLT28" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "2419200 $CPUVOLT29" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "2496000 $CPUVOLT30" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+		echo "$CPUVOLT0" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels;
+	fi;
+fi;

@@ -52,18 +52,24 @@ CPUFREQ_FIX()
 
 	if [ "$state" == "awake" ]; then
 		echo "$scaling_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+		echo "$scaling_governor" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
 		echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+		echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
 		if [ "$scaling_max_freq" -eq "2265600" ] && [ "$scaling_max_freq_oc" -gt "2265600" ]; then
 			MAX_FREQ="$scaling_max_freq_oc";	
 		else
 			MAX_FREQ="$scaling_max_freq";
 		fi;
 		echo "$MAX_FREQ" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+		echo "$MAX_FREQ" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
 		echo "$scheduler" > /sys/block/mmcblk0/queue/scheduler
 	elif [ "$state" == "sleep" ]; then
 		echo "$scaling_suspend_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+		echo "$scaling_suspend_governor" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
 		echo "$scaling_min_suspend_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq	
+		echo "$scaling_min_suspend_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq	
 		echo "$scaling_max_suspend_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+		echo "$scaling_max_suspend_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
 		echo "$suspend_scheduler" > /sys/block/mmcblk0/queue/scheduler
 	fi;
 

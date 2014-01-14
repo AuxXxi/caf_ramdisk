@@ -94,6 +94,97 @@
 
 </settingsTab>
 
+<settingsTab name="Voltage Control">
+
+	<settingsPane description="Voltage Range is 600~1250 mV. USE this interface AT YOUR OWN RISK! If you get SOD before you can load this interface and cannot fix your error, reset your profiles by flashing Chaos 9.0 Beta 3, reboot, reflash latest chaos kernel. And think harder before you SOD your CPU with too much UV or OV!" name="CPU Voltage Controls">
+
+		<checkbox description="Main switch for Voltage Control! If disabled, all below settings have no effect! If you are using an external application or script to configure CPU voltage, do not tick this checkbox. Do not start to mod voltage before you enable this switch! It won't make any effect and you will have to set all to default, and tune again!" name="CPU Voltage Main Switch" action="generic_cortex /tmp/cpu_voltage_switch" label="CPU Voltage Main Switch"/>
+
+		<button description="Use this button to see what CPU Voltage is used right now!" name="Check Active CPU Voltage" action="push-actions/check_cpu_voltage" label="Check CPU Voltage"/>
+
+		<spinner description="Offset voltage will act on all levels and decrease/increase voltage accordingly." name="Offset Voltage" action="cpu-voltage 0">
+			<spinnerItem name="-100 mV" value="-100000"/>
+			<spinnerItem name="-90 mV" value="-90000"/>
+			<spinnerItem name="-80 mV" value="-80000"/>
+			<spinnerItem name="-70 mV" value="-70000"/>
+			<spinnerItem name="-60 mV" value="-60000"/>
+			<spinnerItem name="-50 mV" value="-50000"/>
+			<spinnerItem name="-40 mV" value="-40000"/>
+			<spinnerItem name="-30 mV" value="-30000"/>
+			<spinnerItem name="-25 mV" value="-25000"/>
+			<spinnerItem name="-20 mV" value="-20000"/>
+			<spinnerItem name="-10 mV" value="-10000"/>
+			<spinnerItem name="-5 mV" value="-5000"/>
+			<spinnerItem name="Disabled" value="+0"/>
+			<spinnerItem name="+5 mV" value="+5000"/>
+			<spinnerItem name="+10 mV" value="+10000"/>
+			<spinnerItem name="+20 mV" value="+20000"/>
+			<spinnerItem name="+25 mV" value="+25000"/>
+		</spinner>
+
+		<seekBar description="Default 775 mV" name="CPU Voltage 300 MHz" action="cpu-voltage 1" unit="uV" min="600000" reversed="false" step="5000" max="825000"/>
+
+		<seekBar description="Default 800 mV" name="CPU Voltage 345 MHz" action="cpu-voltage 2" unit="uV" min="625000" reversed="false" step="5000" max="850000"/>
+
+		<seekBar description="Default 800 mV" name="CPU Voltage 422 MHz" action="cpu-voltage 3" unit="uV" min="625000" reversed="false" step="5000" max="850000"/>
+
+		<seekBar description="Default 800 mV" name="CPU Voltage 499 MHz" action="cpu-voltage 4" unit="uV" min="625000" reversed="false" step="5000" max="850000"/>
+
+		<seekBar description="Default 800 mV" name="CPU Voltage 576 MHz" action="cpu-voltage 5" unit="uV" min="625000" reversed="false" step="5000" max="850000"/>
+
+		<seekBar description="Default 810 mV" name="CPU Voltage 652 MHz" action="cpu-voltage 6" unit="uV" min="650000" reversed="false" step="5000" max="875000"/>
+
+		<seekBar description="Default 820 mV" name="CPU Voltage 729 MHz" action="cpu-voltage 7" unit="uV" min="650000" reversed="false" step="5000" max="875000"/>
+
+		<seekBar description="Default 830 mV" name="CPU Voltage 806 MHz" action="cpu-voltage 8" unit="uV" min="650000" reversed="false" step="5000" max="875000"/>
+
+		<seekBar description="Default 840 mV" name="CPU Voltage 883 MHz" action="cpu-voltage 9" unit="uV" min="650000" reversed="false" step="5000" max="875000"/>
+
+		<seekBar description="Default 850 mV" name="CPU Voltage 960 MHz" action="cpu-voltage 10" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+
+		<seekBar description="Default 860 mV" name="CPU Voltage 1036 MHz" action="cpu-voltage 11" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+
+		<seekBar description="Default 875 mV" name="CPU Voltage 1113 MHz" action="cpu-voltage 12" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+
+		<seekBar description="Default 885 mV" name="CPU Voltage 1190 MHz" action="cpu-voltage 13" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+
+		<seekBar description="Default 895 mV" name="CPU Voltage 1267 MHz" action="cpu-voltage 14" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+
+		<seekBar description="Default 910 mV" name="CPU Voltage 1344 MHz" action="cpu-voltage 15" unit="uV" min="775000" reversed="false" step="5000" max="1000000"/>
+
+		<seekBar description="Default 920 mV" name="CPU Voltage 1420 MHz" action="cpu-voltage 16" unit="uV" min="775000" reversed="false" step="5000" max="1000000"/>
+
+		<seekBar description="Default 930 mV" name="CPU Voltage 1497 MHz" action="cpu-voltage 17" unit="uV" min="775000" reversed="false" step="5000" max="1000000"/>
+
+		<seekBar description="Default 945 mV" name="CPU Voltage 1420 MHz" action="cpu-voltage 18" unit="uV" min="775000" reversed="false" step="5000" max="1000000"/>
+
+		<seekBar description="Default 960 mV" name="CPU Voltage 1651 MHz" action="cpu-voltage 19" unit="uV" min="825000" reversed="false" step="5000" max="1050000"/>
+
+		<seekBar description="Default 975 mV" name="CPU Voltage 1728 MHz" action="cpu-voltage 20" unit="uV" min="825000" reversed="false" step="5000" max="1050000"/>
+
+		<seekBar description="Default 990 mV" name="CPU Voltage 1804 MHz" action="cpu-voltage 21" unit="uV" min="825000" reversed="false" step="5000" max="1050000"/>
+
+		<seekBar description="Default 1005 mV" name="CPU Voltage 1881 MHz" action="cpu-voltage 22" unit="uV" min="900000" reversed="false" step="5000" max="1125000"/>
+
+		<seekBar description="Default 1020 mV" name="CPU Voltage 1958 MHz" action="cpu-voltage 23" unit="uV" min="900000" reversed="false" step="5000" max="1125000"/>
+
+		<seekBar description="Default 1030 mV" name="CPU Voltage 2035 MHz" action="cpu-voltage 24" unit="uV" min="900000" reversed="false" step="5000" max="1125000"/>
+
+		<seekBar description="Default 1045 mV" name="CPU Voltage 2112 MHz" action="cpu-voltage 25" unit="uV" min="900000" reversed="false" step="5000" max="1125000"/>
+
+		<seekBar description="Default 1060 mV" name="CPU Voltage 2188 MHz" action="cpu-voltage 26" unit="uV" min="925000" reversed="false" step="5000" max="1150000"/>
+
+		<seekBar description="Default 1075 mV" name="CPU Voltage 2265 MHz" action="cpu-voltage 27" unit="uV" min="925000" reversed="false" step="5000" max="1150000"/>
+
+		<seekBar description="Default 1090 mV" name="CPU Voltage 2342 MHz" action="cpu-voltage 28" unit="uV" min="925000" reversed="false" step="5000" max="1150000"/>
+
+		<seekBar description="Default 1105 mV" name="CPU Voltage 2419 MHz" action="cpu-voltage 29" unit="uV" min="1000000" reversed="false" step="5000" max="1225000"/>
+
+		<seekBar description="Default 1120 mV" name="CPU Voltage 2496 MHz" action="cpu-voltage 30" unit="uV" min="1000000" reversed="false" step="5000" max="1225000"/>
+	</settingsPane>
+
+</settingsTab>
+
 <settingsTab name="GPU Control">
 
 	<settingsPane description="You can change GPU settings here and customize as per your use." name="GPU Control">
@@ -123,7 +214,7 @@
 </settingsTab>
 
 <settingsTab name="Memory Control">
-	<settingsPane description="OOM(Out of memory) is undesired state where no additional memory resources can be allocated. You can tune behavior of OOM Killer below." name="OOM Killer">
+	<settingsPane description="OOM(Out of memory) is undesired state where no additional memory resources can be allocated. You can tune behavior of OOM Killer below. We recommend screen on/off values to be same." name="OOM Killer">
 
 		<checkbox description="Enable AUTO OOM control using below profiles, disable if you want to set your own OOM tuning via APP or Script." name="Auto OOM" action="generic01 /sys/module/lowmemorykiller/parameters/auto_oom" label="AUTO OOM CONTROL"/>
 
@@ -246,7 +337,7 @@
 			<spinnerItem name="Morpheus go away!" value="0"/> 
 		</spinner>
 
-		<checkbox description="Enable or Disable IPv6 Network. Depends on morpheus mode." name="IPv6 Tweaks" action="generic_cortex /tmp/morpheus_ipv6" label="IPv6"/>
+		<checkbox description="Enable or Disable IPv6 Network. Depends on morpheus mode. Most T-Mobile users use IPv6 network for data connection and therefore, will need this switch enabled." name="IPv6 Tweaks" action="generic_cortex /tmp/morpheus_ipv6" label="IPv6"/>
 
 		<spinner description="There are two color presets: stock and slightly cooler. When this option is enabled you will have slighly cooler and vivid color preset. For changes to take effect use power button to lock screen off and then on." name="Color Tweak" action="generic /sys/module/mdss_dsi/parameters/color_preset">
 			<spinnerItem name="Disabled" value="0"/> 
@@ -254,9 +345,14 @@
 			<spinnerItem name="Vivid" value="1"/> 
 		</spinner>
 
+		<spinner description="This enables color tuning on the boot to achieve gamma correction near ideal 2.2. Not recommended to use with above color preset. This option is for users who don't wish to calibrate gamma using calibration app. We will update gamma correction used here based on suggestions and tested results. REQUIRES REBOOT." name="Gamma Correction" action="generic_cortex /tmp/gamma_correction">
+			<spinnerItem name="Disabled" value="off"/> 
+			<spinnerItem name="Enabled" value="on"/> 
+		</spinner>
+
 		<seekBar description="This slider helps increasing/decreasing vibrator strength. Default 75." name="Vibrator Strength" action="generic /sys/devices/virtual/timed_output/vibrator/amp" unit=" " min="0" reversed="false" step="1" max="100"/>
 
-	<spinner description="Sleeper Fairness is a concept used by CFS (Default task scheduler) which treat sleeping/waiting tasks as if they were in a run queue. This implies tasks which spend most of the time waiting for an user input and such will get a fair share of CPU when they need it. Disabling Gentle Fair Sleeper could improve UI responsiveness but may increase battery consumption to some level." name="Gentle Fair Sleeper" action="generic sys/kernel/sched/gentle_fair_sleepers">
+	<spinner description="Sleeper Fairness is a concept used by CFS (Default task scheduler) which treat sleeping/waiting tasks as if they were in a run queue. This implies tasks which spend most of the time waiting for an user input and such will get a fair share of CPU when they need it. Disabling Gentle Fair Sleeper could improve UI responsiveness. Effect on battery consumption is not tested." name="Gentle Fair Sleeper" action="generic sys/kernel/sched/gentle_fair_sleepers">
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
 		</spinner>
@@ -271,9 +367,18 @@
 			<spinnerItem name="Disable" value="off"/> 
 		</spinner>
 
-		<spinner description="This option allows some cheap USB chargers with > 500ma to be recognized as an AC charger in order to charge at a faster rate." name="Fast Charge" action="generic /sys/kernel/fast_charge/force_fast_charge">
+		<spinner description="This option allows some cheap USB chargers with power supply greater than 500 mA to be recognized as an AC charger in order to charge at a faster rate. Use 'enable' to attempt power source recognize as AC Power source or use 'custom' to enter your desired limit of input current." name="Fast Charge" action="generic /sys/kernel/fast_charge/force_fast_charge">
+			<spinnerItem name="Custom" value="2"/> 
 			<spinnerItem name="Enable" value="1"/> 
 			<spinnerItem name="Disable" value="0"/> 
+		</spinner>
+
+		<spinner description="If you choose 'custom' above, you can select your desired limit of input current to be accepted from external non-AC power source. Default 1200 mA." name="Fast Charge Custom Values" action="generic /sys/kernel/fast_charge/fast_charge_level">
+			<spinnerItem name="500 mA" value="500"/> 
+			<spinnerItem name="900 mA" value="900"/> 
+			<spinnerItem name="1200 mA" value="1200"/> 
+			<spinnerItem name="1500 mA" value="1500"/> 
+			<spinnerItem name="2000 mA" value="2000"/> 
 		</spinner>
 
 		<spinner description="Backlight dimmer allows you to adjust the LCD screen brightness lower than is possible with stock. Be careful, you can lower the brightness so much you can barely see it." name="Backlight Dimmer" action="generic /sys/module/lm3630_bl/parameters/backlight_dimmer">
@@ -324,6 +429,34 @@
 		<button description="This button tries to force-load selected modules in the memory without requiring a reboot. This may not help, because most modules requires a reboot. This button is primarily for testing purposes." name="Force-Load Modules" action="push-actions/load_modules" label="Force-Load Modules"/>
 
 	</settingsPane>
+</settingsTab>
+
+<settingsTab name="Profiles">
+
+	<settingsPane description="You can check what profile is used right now." name="Online Profile">
+
+		<button description="This displays your currently used profile." name="Profile Check" action="push-actions/profile" label="Profile Check"/>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can switch between profile of your choice. Balanced profile is default profile." name="NXTweaks Profiles">
+
+		<button description="This will load and apply power saving settings for NXTweaks. Kernel will be biased for more power saving with comparatively less performance. This profile is not recommended for gamers." name="Power-Save NXTweaks Settings" action="push-actions/config_backup_restore 3" label="Battery Profile"/>
+
+		<button description="This will load and apply balanced settings for NXTweaks. You will experience very good performance with efficient battery usage. This is ideal profile for most users." name="Balanced NXTweaks Settings" action="push-actions/config_backup_restore 4" label="Balanced Profile"/>
+
+		<button description="This will load and apply performance settings for NXTweaks. You will get best performance kernel can give at the cost of little more power consumption.This is best profile for gamers and heavy application users." name="Performance NXTweaks Settings" action="push-actions/config_backup_restore 5" label="Performance Profile"/>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can backup or restore your profile after installing new version. When you restore your settings, please wait till this app restarts with the new settings. Some settings will work only after reboot! Restore usually takes upto 5 sec, just wait here!" name="NXTweaks Profile Settings Backup and Restore">
+
+		<button description="Backup NXTweaks User Settings!" name="Backup Current Profile" action="push-actions/config_backup_restore 1" label="Backup Now"/>
+
+		<button description="Restore NXTweaks User Settings!" name="Restore Current Profile" action="push-actions/config_backup_restore 2" label="Restore Now"/>
+
+	</settingsPane>
+
 </settingsTab>
 
 </settingsRoot>
