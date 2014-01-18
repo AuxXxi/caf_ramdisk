@@ -53,6 +53,7 @@
 			<spinnerItem name="Intellidemand" value="intellidemand"/>
 			<spinnerItem name="Interactive" value="interactive"/>
 			<spinnerItem name="Ondemand" value="ondemand"/>
+			<spinnerItem name="OndemandPlus" value="ondemandplus"/>
 			<spinnerItem name="Performance" value="performance"/>
 			<spinnerItem name="SmartassH3" value="smartassH3"/>
 			<spinnerItem name="Userspace" value="userspace"/>
@@ -63,6 +64,7 @@
 			<spinnerItem name="Intellidemand" value="intellidemand"/>
 			<spinnerItem name="Interactive" value="interactive"/>
 			<spinnerItem name="Ondemand" value="ondemand"/>
+			<spinnerItem name="OndemandPlus" value="ondemandplus"/>
 			<spinnerItem name="Performance" value="performance"/>
 			<spinnerItem name="SmartassH3" value="smartassH3"/>
 			<spinnerItem name="Userspace" value="userspace"/>
