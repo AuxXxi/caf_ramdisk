@@ -12,8 +12,7 @@ import /init.carrier.rc
 import /init.chaos.rc
 
 on early-init
-    # Set init and its forked children's oom_adj.
-    write /proc/1/oom_adj -16
+    # Set init and its forked children's oom_score_adj.
     write /proc/1/oom_score_adj -1000
 
     # Set the security context for the init process.
@@ -152,7 +151,6 @@ loglevel 3
     mkdir /dev/fscklogs 0770 root system
 
 on post-fs
-    # once everything is setup, no need to modify /
     mount rootfs rootfs / rw remount
     # mount shared so changes propagate into child namespaces
     mount rootfs rootfs / shared rec
@@ -373,9 +371,6 @@ on boot
     chown system system /sys/fs/selinux/load
     chown system system /sys/fs/selinux/enforce
 
-# Disable RIL power collapse
-    setprop ro.ril.disable.power.collapse 1
-
 # Define TCP buffer sizes for various networks
 #   ReadMin, ReadInitial, ReadMax, WriteMin, WriteInitial, WriteMax,
     setprop net.tcp.buffersize.default 4096,87380,704512,4096,16384,110208
@@ -390,9 +385,6 @@ on boot
     setprop net.tcp.buffersize.gprs    4096,8760,11680,4096,8760,11680
     setprop net.tcp.buffersize.evdo    4096,87380,262144,4096,16384,262144
     setprop net.tcp.buffersize.evdo_b  4096,87380,704512,4096,16384,262144
-
-# Disable Google OTA Update checkin
-    setprop ro.config.nocheckin 1
 
 # Assign TCP buffer thresholds to be ceiling value of technology maximums
 # Increased technology maximums should be reflected here.

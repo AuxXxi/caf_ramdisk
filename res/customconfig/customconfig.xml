@@ -1,7 +1,7 @@
 <settingsRoot>
 <settingsTab name="CPU Control">
 
-	<settingsPane description="You can change max and min frequencies of your device here. 1.190 GHz is the minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.036 GHz is the maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.265 GHz, Min 300 MHz) Please note scaling frequencies are dynamically changed by mpdecision. However, morpheus mode will try setting below values on screen on/off events." name="CPU Frequency control">
+	<settingsPane description="You can change max and min frequencies of your device here. 1.190 GHz is the minimum limit of max frequency as below this frequency your device may suffer from high performance degradation. 1.036 GHz is the maximum limit of min frequency as above this frequency your device may not cool down. (Default: Max 2.265 GHz, Min 300 MHz) Morpheus mode will try setting below values on screen on/off events." name="CPU Frequency control">
 		<spinner description="This sets maximum frequency of your device. Default 2.265 GHz." name="Max CPU Frequency" action="genericfreq_normal /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq">
 			<spinnerItem name="1.190 GHz" value="1190400"/>
 			<spinnerItem name="1.267 GHz" value="1267200"/>
@@ -25,6 +25,7 @@
 			<spinnerItem name="2.342 GHz" value="2342400"/>
 			<spinnerItem name="2.419 GHz" value="2419200"/>
 			<spinnerItem name="2.496 GHz" value="2496000"/>
+			<spinnerItem name="2.576 GHz" value="2572800"/>
 		</spinner>
 		<spinner description="This sets maximum frequency of your device when screen is off." name="Max CPU Suspend Frequency" action="generic_cortex /tmp/scaling_max_suspend_freq">
 			<spinnerItem name="1.190 GHz" value="1190400"/>
@@ -104,85 +105,45 @@
 
 		<button description="Use this button to see what CPU Voltage is used right now!" name="Check Active CPU Voltage" action="push-actions/check_cpu_voltage" label="Check CPU Voltage"/>
 
-		<spinner description="Offset voltage will act on all levels and decrease/increase voltage accordingly." name="Offset Voltage" action="cpu-voltage 0">
-			<spinnerItem name="-100 mV" value="-100000"/>
-			<spinnerItem name="-90 mV" value="-90000"/>
-			<spinnerItem name="-80 mV" value="-80000"/>
-			<spinnerItem name="-70 mV" value="-70000"/>
-			<spinnerItem name="-60 mV" value="-60000"/>
-			<spinnerItem name="-50 mV" value="-50000"/>
-			<spinnerItem name="-40 mV" value="-40000"/>
-			<spinnerItem name="-30 mV" value="-30000"/>
-			<spinnerItem name="-25 mV" value="-25000"/>
-			<spinnerItem name="-20 mV" value="-20000"/>
-			<spinnerItem name="-10 mV" value="-10000"/>
-			<spinnerItem name="-5 mV" value="-5000"/>
-			<spinnerItem name="Disabled" value="+0"/>
-			<spinnerItem name="+5 mV" value="+5000"/>
-			<spinnerItem name="+10 mV" value="+10000"/>
-			<spinnerItem name="+20 mV" value="+20000"/>
-			<spinnerItem name="+25 mV" value="+25000"/>
-		</spinner>
+		<seekBar description="Negative Offset voltage will act on all levels and decrease voltage accordingly." name="Negative Offset Voltage" action="cpu-voltage 0" unit="mV" min="0" reversed="false" step="5" max="100"/>
 
-		<seekBar description="Default 775 mV" name="CPU Voltage 300 MHz" action="cpu-voltage 1" unit="uV" min="600000" reversed="false" step="5000" max="825000"/>
+		<seekBar description="Positive Offset voltage will act on all levels and increase voltage accordingly." name="Positive Offset Voltage" action="cpu-voltage 50" unit="mV" min="0" reversed="false" step="5" max="100"/>
 
-		<seekBar description="Default 800 mV" name="CPU Voltage 345 MHz" action="cpu-voltage 2" unit="uV" min="625000" reversed="false" step="5000" max="850000"/>
+		<seekBar description="Default 750 mV" name="CPU Voltage 300 MHz" action="cpu-voltage 1" unit="mV" min="650" reversed="false" step="5" max="825"/>
 
-		<seekBar description="Default 800 mV" name="CPU Voltage 422 MHz" action="cpu-voltage 3" unit="uV" min="625000" reversed="false" step="5000" max="850000"/>
+		<seekBar description="Default 775 mV" name="CPU Voltage 422 MHz" action="cpu-voltage 2" unit="mV" min="650" reversed="false" step="5" max="850"/>
 
-		<seekBar description="Default 800 mV" name="CPU Voltage 499 MHz" action="cpu-voltage 4" unit="uV" min="625000" reversed="false" step="5000" max="850000"/>
+		<seekBar description="Default 785 mV" name="CPU Voltage 652 MHz" action="cpu-voltage 3" unit="mV" min="650" reversed="false" step="5" max="870"/>
 
-		<seekBar description="Default 800 mV" name="CPU Voltage 576 MHz" action="cpu-voltage 5" unit="uV" min="625000" reversed="false" step="5000" max="850000"/>
+		<seekBar description="Default 795 mV" name="CPU Voltage 729 MHz" action="cpu-voltage 4" unit="mV" min="650" reversed="false" step="5" max="870"/>
 
-		<seekBar description="Default 810 mV" name="CPU Voltage 652 MHz" action="cpu-voltage 6" unit="uV" min="650000" reversed="false" step="5000" max="875000"/>
+		<seekBar description="Default 815 mV" name="CPU Voltage 883 MHz" action="cpu-voltage 5" unit="mV" min="650" reversed="false" step="5" max="875"/>
 
-		<seekBar description="Default 820 mV" name="CPU Voltage 729 MHz" action="cpu-voltage 7" unit="uV" min="650000" reversed="false" step="5000" max="875000"/>
+		<seekBar description="Default 825 mV" name="CPU Voltage 960 MHz" action="cpu-voltage 6" unit="mV" min="725" reversed="false" step="5" max="950"/>
 
-		<seekBar description="Default 830 mV" name="CPU Voltage 806 MHz" action="cpu-voltage 8" unit="uV" min="650000" reversed="false" step="5000" max="875000"/>
+		<seekBar description="Default 835 mV" name="CPU Voltage 1036 MHz" action="cpu-voltage 7" unit="mV" min="725" reversed="false" step="5" max="950"/>
 
-		<seekBar description="Default 840 mV" name="CPU Voltage 883 MHz" action="cpu-voltage 9" unit="uV" min="650000" reversed="false" step="5000" max="875000"/>
+		<seekBar description="Default 860 mV" name="CPU Voltage 1190 MHz" action="cpu-voltage 8" unit="mV" min="725" reversed="false" step="5" max="950"/>
 
-		<seekBar description="Default 850 mV" name="CPU Voltage 960 MHz" action="cpu-voltage 10" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+		<seekBar description="Default 870 mV" name="CPU Voltage 1267 MHz" action="cpu-voltage 9" unit="mV" min="725" reversed="false" step="5" max="950"/>
 
-		<seekBar description="Default 860 mV" name="CPU Voltage 1036 MHz" action="cpu-voltage 11" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+		<seekBar description="Default 905 mV" name="CPU Voltage 1497 MHz" action="cpu-voltage 10" unit="mV" min="775" reversed="false" step="5" max="1000"/>
 
-		<seekBar description="Default 875 mV" name="CPU Voltage 1113 MHz" action="cpu-voltage 12" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+		<seekBar description="Default 920 mV" name="CPU Voltage 1574 MHz" action="cpu-voltage 11" unit="mV" min="775" reversed="false" step="5" max="1000"/>
 
-		<seekBar description="Default 885 mV" name="CPU Voltage 1190 MHz" action="cpu-voltage 13" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+		<seekBar description="Default 950 mV" name="CPU Voltage 1728 MHz" action="cpu-voltage 12" unit="mV" min="825" reversed="false" step="5" max="1050"/>
 
-		<seekBar description="Default 895 mV" name="CPU Voltage 1267 MHz" action="cpu-voltage 14" unit="uV" min="725000" reversed="false" step="5000" max="950000"/>
+		<seekBar description="Default 995 mV" name="CPU Voltage 1958 MHz" action="cpu-voltage 13" unit="mV" min="900" reversed="false" step="5" max="1125"/>
 
-		<seekBar description="Default 910 mV" name="CPU Voltage 1344 MHz" action="cpu-voltage 15" unit="uV" min="775000" reversed="false" step="5000" max="1000000"/>
+		<seekBar description="Default 1050 mV" name="CPU Voltage 2265 MHz" action="cpu-voltage 14" unit="mV" min="925" reversed="false" step="5" max="1150"/>
 
-		<seekBar description="Default 920 mV" name="CPU Voltage 1420 MHz" action="cpu-voltage 16" unit="uV" min="775000" reversed="false" step="5000" max="1000000"/>
+		<seekBar description="Default 1065 mV" name="CPU Voltage 2342 MHz" action="cpu-voltage 15" unit="mV" min="925" reversed="false" step="5" max="1150"/>
 
-		<seekBar description="Default 930 mV" name="CPU Voltage 1497 MHz" action="cpu-voltage 17" unit="uV" min="775000" reversed="false" step="5000" max="1000000"/>
+		<seekBar description="Default 1080 mV" name="CPU Voltage 2419 MHz" action="cpu-voltage 16" unit="mV" min="1000" reversed="false" step="5" max="1225"/>
 
-		<seekBar description="Default 945 mV" name="CPU Voltage 1420 MHz" action="cpu-voltage 18" unit="uV" min="775000" reversed="false" step="5000" max="1000000"/>
+		<seekBar description="Default 1090 mV" name="CPU Voltage 2496 MHz" action="cpu-voltage 17" unit="mV" min="1000" reversed="false" step="5" max="1225"/>
 
-		<seekBar description="Default 960 mV" name="CPU Voltage 1651 MHz" action="cpu-voltage 19" unit="uV" min="825000" reversed="false" step="5000" max="1050000"/>
-
-		<seekBar description="Default 975 mV" name="CPU Voltage 1728 MHz" action="cpu-voltage 20" unit="uV" min="825000" reversed="false" step="5000" max="1050000"/>
-
-		<seekBar description="Default 990 mV" name="CPU Voltage 1804 MHz" action="cpu-voltage 21" unit="uV" min="825000" reversed="false" step="5000" max="1050000"/>
-
-		<seekBar description="Default 1005 mV" name="CPU Voltage 1881 MHz" action="cpu-voltage 22" unit="uV" min="900000" reversed="false" step="5000" max="1125000"/>
-
-		<seekBar description="Default 1020 mV" name="CPU Voltage 1958 MHz" action="cpu-voltage 23" unit="uV" min="900000" reversed="false" step="5000" max="1125000"/>
-
-		<seekBar description="Default 1030 mV" name="CPU Voltage 2035 MHz" action="cpu-voltage 24" unit="uV" min="900000" reversed="false" step="5000" max="1125000"/>
-
-		<seekBar description="Default 1045 mV" name="CPU Voltage 2112 MHz" action="cpu-voltage 25" unit="uV" min="900000" reversed="false" step="5000" max="1125000"/>
-
-		<seekBar description="Default 1060 mV" name="CPU Voltage 2188 MHz" action="cpu-voltage 26" unit="uV" min="925000" reversed="false" step="5000" max="1150000"/>
-
-		<seekBar description="Default 1075 mV" name="CPU Voltage 2265 MHz" action="cpu-voltage 27" unit="uV" min="925000" reversed="false" step="5000" max="1150000"/>
-
-		<seekBar description="Default 1090 mV" name="CPU Voltage 2342 MHz" action="cpu-voltage 28" unit="uV" min="925000" reversed="false" step="5000" max="1150000"/>
-
-		<seekBar description="Default 1105 mV" name="CPU Voltage 2419 MHz" action="cpu-voltage 29" unit="uV" min="1000000" reversed="false" step="5000" max="1225000"/>
-
-		<seekBar description="Default 1120 mV" name="CPU Voltage 2496 MHz" action="cpu-voltage 30" unit="uV" min="1000000" reversed="false" step="5000" max="1225000"/>
+		<seekBar description="Default 1105 mV" name="CPU Voltage 2572 MHz" action="cpu-voltage 18" unit="mV" min="1000" reversed="false" step="5" max="1225"/>
 	</settingsPane>
 
 </settingsTab>

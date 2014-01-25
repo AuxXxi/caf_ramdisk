@@ -97,9 +97,9 @@ on boot
 
     # Define TCP buffer sizes
     # ReadMin, ReadInitial, ReadMax, WriteMin, WriteInitial, WriteMax
-    setprop net.tcp.buffersize.hsdpa    4094,87380,704512,4096,16384,110208
-    setprop net.tcp.buffersize.hspa     4094,87380,704512,4096,16384,110208
-    setprop net.tcp.buffersize.hsupa    4094,87380,704512,4096,16384,110208
+    setprop net.tcp.buffersize.hsdpa    4096,87380,704512,4096,16384,110208
+    setprop net.tcp.buffersize.hspa     4096,87380,704512,4096,16384,110208
+    setprop net.tcp.buffersize.hsupa    4096,87380,704512,4096,16384,110208
 
     # create symlink for fb1 as HDMI
     symlink /dev/graphics/fb1 /dev/graphics/hdmi
@@ -192,6 +192,7 @@ on post-fs-data
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/class/devfreq/qcom,cpubw.30/governor "cpubw_hwmon"
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "interactive"
@@ -241,15 +242,11 @@ on charger
     start irsc_util
 
     # Enable Power modes and set the CPU Freq Sampling rates
-    write /sys/module/lpm_resources/enable_low_power/l2 2
-    write /sys/module/lpm_resources/enable_low_power/pxo 1
-    write /sys/module/lpm_resources/enable_low_power/vdd_dig 1
-    write /sys/module/lpm_resources/enable_low_power/vdd_mem 1
-    write /sys/module/pm_8x60/modes/cpu0/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu2/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu3/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/power_collapse/idle_enabled 1
     write /sys/module/msm_thermal/core_control/enabled 0
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
@@ -277,27 +274,26 @@ on property:init.svc.wpa_supplicant=stopped
 
 on property:sys.boot_completed=1
     # Enable Power modes
-    write /sys/module/lpm_resources/enable_low_power/l2 2
-    write /sys/module/lpm_resources/enable_low_power/pxo 1
-    write /sys/module/lpm_resources/enable_low_power/vdd_dig 1
-    write /sys/module/lpm_resources/enable_low_power/vdd_mem 1
-    write /sys/module/pm_8x60/modes/cpu0/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu2/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu3/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu0/standalone_power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/standalone_power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu2/standalone_power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu3/standalone_power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu0/standalone_power_collapse/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/standalone_power_collapse/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu2/standalone_power_collapse/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu3/standalone_power_collapse/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu0/retention/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/retention/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu2/retention/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu3/retention/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/standalone_power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/standalone_power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/standalone_power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/standalone_power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/standalone_power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/standalone_power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/standalone_power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/standalone_power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/retention/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/retention/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/retention/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/retention/idle_enabled 1
     start mpdecision
     start postinit
 
@@ -424,7 +420,6 @@ service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk /s
 
 service charger /charger
     class charger
-
 
 service qcamerasvr /system/bin/mm-qcamera-daemon
     class late_start

@@ -13,12 +13,7 @@ echo "1267200" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo "2265600" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
-# We are using mpdecision, let's restore powerhal
-if [ -e /system/lib/hw/power.msm8974.so.bak ]; then
-	$BB mv /system/lib/hw/power.msm8974.so.bak /system/lib/hw/power.msm8974.so;
-fi
-
-# We are using inbuilt thermal engine, let's restore if someone else messed up
+# restore kernel as it should be
 if [ -e /system/bin/thermal-engine-hh-bak ]; then
 	$BB mv /system/bin/thermal-engine-hh-bak /system/bin/thermal-engine-hh;
 fi
@@ -82,7 +77,7 @@ fi;
 
 # reset profiles auto trigger to be used by kernel ADMIN, in case of need, if new value added in default profiles
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
-RESET_MAGIC=4;
+RESET_MAGIC=7;
 if [ ! -e /data/.siyah/reset_profiles ]; then
 	echo "0" > /data/.siyah/reset_profiles;
 fi;
@@ -131,8 +126,7 @@ $BB chmod -R 755 /system/lib;
 		$BB insmod /lib/modules/exfat_core.ko >> /data/nx_modules.log 2>&1;
 	fi;
 	if [ "$frandom_module" == "on" ]; then
-		echo "Loading FRANDOM Module" >> /data/nx_modules.log;
-#		$BB insmod /lib/modules/frandom.ko >> /data/nx_modules.log 2>&1;
+		echo "Loading FRANDOM" >> /data/nx_modules.log;
 		$BB chmod 644 /dev/frandom >> /data/nx_modules.log 2>&1;
 		$BB chmod 644 /dev/erandom >> /data/nx_modules.log 2>&1;
 		mv /dev/random /dev/random.ori >> /data/nx_modules.log 2>&1;
@@ -246,6 +240,19 @@ chmod 666 /tmp/uci_done;
 
 	# kill radio logcat to sdcard
 	$BB pkill -f "logcat -b radio -v time";
+
+	# Disable RIL power collapse
+	setprop ro.ril.disable.power.collapse 1
+
+	# Disable Google OTA Update checkin
+	setprop ro.config.nocheckin 1
+
+	# ROM Tuning
+	setprop pm.sleep_mode 1
+	setprop af.resampler.quality 4
+	setprop audio.offload.buffer.size.kb 32
+	setprop audio.offload.gapless.enabled true
+	setprop av.offload.enable true
 
 	# mark boot completion
 	$BB touch /data/.bootcheck;

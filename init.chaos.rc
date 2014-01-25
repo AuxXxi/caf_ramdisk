@@ -1,4 +1,4 @@
-# Chaos Kernel Extras
+# Chaos Extras
 import /init.superuser.rc
 
 on init
