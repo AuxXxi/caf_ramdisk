@@ -3,20 +3,12 @@
 BB=/system/xbin/busybox
 
 # mount partitions to begin optimization
+# reload fstab options since multirom modifies fstab
 $BB mount -t rootfs -o remount,rw rootfs;
-$BB mount -o remount,rw /system;
 $BB mount -o remount,rw /;
-
-# Avoid random freq behavior, apply stock freq behavior to begin with
-# Also boost minimum freq to boot w/o lag
-echo "1267200" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-echo "2265600" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-
-# restore kernel as it should be
-if [ -e /system/bin/thermal-engine-hh-bak ]; then
-	$BB mv /system/bin/thermal-engine-hh-bak /system/bin/thermal-engine-hh;
-fi
+$BB mount -o remount,rw,barrier=1 /system;
+$BB mount -o remount,rw,noatime,nosuid,nodev,barrier=1,data=ordered,noauto_da_alloc,journal_async_commit /data;
+$BB mount -o remount,rw,noatime,nosuid,nodev,barrier=1,data=ordered,noauto_da_alloc,journal_async_commit /cache;
 
 # remove previous bootcheck file
 $BB rm -f /data/.bootcheck 2> /dev/null;
@@ -77,7 +69,7 @@ fi;
 
 # reset profiles auto trigger to be used by kernel ADMIN, in case of need, if new value added in default profiles
 # just set numer $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
-RESET_MAGIC=7;
+RESET_MAGIC=8;
 if [ ! -e /data/.siyah/reset_profiles ]; then
 	echo "0" > /data/.siyah/reset_profiles;
 fi;
@@ -251,7 +243,7 @@ chmod 666 /tmp/uci_done;
 	setprop pm.sleep_mode 1
 	setprop af.resampler.quality 4
 	setprop audio.offload.buffer.size.kb 32
-	setprop audio.offload.gapless.enabled true
+	setprop audio.offload.gapless.enabled false
 	setprop av.offload.enable true
 
 	# mark boot completion

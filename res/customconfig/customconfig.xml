@@ -99,7 +99,7 @@
 
 <settingsTab name="Voltage Control">
 
-	<settingsPane description="Voltage Range is 600~1250 mV. USE this interface AT YOUR OWN RISK! If you get SOD before you can load this interface and cannot fix your error, reset your profiles by flashing Chaos 9.0 Beta 3, reboot, reflash latest chaos kernel. And think harder before you SOD your CPU with too much UV or OV!" name="CPU Voltage Controls">
+	<settingsPane description="Voltage Range is 650~1200 mV. USE this interface AT YOUR OWN RISK! If you get SOD before you can load this interface and cannot fix your error, reset your profiles by flashing Chaos 9.2, reboot, reflash latest chaos kernel. And think harder before you SOD your CPU with too much UV or OV!" name="CPU Voltage Controls">
 
 		<checkbox description="Main switch for Voltage Control! If disabled, all below settings have no effect! If you are using an external application or script to configure CPU voltage, do not tick this checkbox. Do not start to mod voltage before you enable this switch! It won't make any effect and you will have to set all to default, and tune again!" name="CPU Voltage Main Switch" action="generic_cortex /tmp/cpu_voltage_switch" label="CPU Voltage Main Switch"/>
 
@@ -268,13 +268,13 @@
 
 	<settingsPane description="Set temperature limits at which device starts throttling. Increasing these limits will increase performance of device at the cost of over heating." name="Temperature Control">
 
-		<seekBar description="This slider sets device temperature limit at which throttling will start. Stock 60. Recommended 70." name="Frequency Throttle Temperature" action="generic /sys/module/msm_thermal/parameters/limit_temp" unit="Celcius" min="60" reversed="false" step="1" max="95"/>
+		<seekBar description="This slider sets device temperature limit at which throttling will start. Stock 60. Recommended 80." name="Frequency Throttle Temperature" action="generic /sys/module/msm_thermal/parameters/limit_temp" unit="Celcius" min="60" reversed="false" step="1" max="95"/>
 
-		<seekBar description="This slider sets device temperature limit at which throttling will start when screen is off. Stock 60. Recommended 65." name="Frequency Throttle Suspend Temperature" action="generic_cortex /tmp/limit_temp_suspend" unit="Celcius" min="60" reversed="false" step="1" max="95"/>
+		<seekBar description="This slider sets device temperature limit at which throttling will start when screen is off. Stock 60. Recommended 70." name="Frequency Throttle Suspend Temperature" action="generic_cortex /tmp/limit_temp_suspend" unit="Celcius" min="60" reversed="false" step="1" max="95"/>
 
-		<seekBar description="This slider sets core temperature limit at which throttling will start. Stock 80. Recommended 85." name="Core Throttle Temperature" action="generic /sys/module/msm_thermal/parameters/core_limit_temp" unit="Celcius" min="60" reversed="false" step="1" max="105"/>
+		<seekBar description="This slider sets core temperature limit at which throttling will start. Stock 80. Recommended 110. Cores should not be throttled, frequency should be throttled to control temperature." name="Core Throttle Temperature" action="generic /sys/module/msm_thermal/parameters/core_limit_temp" unit="Celcius" min="70" reversed="false" step="1" max="110"/>
 
-		<seekBar description="This slider sets core temperature limit at which throttling will start when screen is off. Stock 80. Recommended 80." name="Core Throttle Suspend Temperature" action="generic_cortex /tmp/core_limit_temp_suspend" unit="Celcius" min="60" reversed="false" step="1" max="105"/>
+		<seekBar description="This slider sets core temperature limit at which throttling will start when screen is off. Stock 80. Recommended 90." name="Core Throttle Suspend Temperature" action="generic_cortex /tmp/core_limit_temp_suspend" unit="Celcius" min="70" reversed="false" step="1" max="110"/>
 
 	</settingsPane>
 
@@ -417,6 +417,20 @@
 		<button description="Backup NXTweaks User Settings!" name="Backup Current Profile" action="push-actions/config_backup_restore 1" label="Backup Now"/>
 
 		<button description="Restore NXTweaks User Settings!" name="Restore Current Profile" action="push-actions/config_backup_restore 2" label="Restore Now"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="Bug-Report">
+
+	<settingsPane description="These are the most useful debug logs. Post THEM along with description of issue faced with ROM name." name="Bug-Report">
+
+		<button description="Bug-Report for different kernel parameters like LMK, Schedulers, etc. This can be useful to report freezes." name="Kernel-Config-Debug" action="push-actions/debug_to_sd 1" label="Kernel-Config-Debug"/>
+
+		<button description="Bug-Report for apps using logcat" name="App-Debug" action="push-actions/debug_to_sd 2" label="Apps-Debug"/>
+
+		<button description="Bug-Report after kernel crash. Use this to report SODs (sleep of deaths) or random restarts or if you had to press the power key for 7 seconds to reset after freeze.  Upload log to forum. We may try to get it resolved." name="LAST-KERNEL-LOG" action="push-actions/debug_to_sd 3" label="Last-Kernel-Log"/>
 
 	</settingsPane>
 
